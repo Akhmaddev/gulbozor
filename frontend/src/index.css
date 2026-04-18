@@ -1,0 +1,22 @@
+/* Butun sahifa balandligini nazorat qilish */
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .sayt {
+    display: flex;
+    flex-direction: column; /* Elementlarni vertikal taxlaydi */
+    min-height: 100vh;      /* Sayt kamida ekran bo'yi darajasida bo'ladi */
+    background-color: white; /* Qora fon */
+  }
+  
+  /* Navbar va Footer orasidagi asosiy qism */
+  /* Bu qism bo'sh joyni to'ldirib, footerni pastga itaradi */
+  .main-content {
+    flex: 1; 
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
