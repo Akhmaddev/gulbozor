@@ -2,7 +2,7 @@ import React from 'react'
 
 const Savat = () => {
   return (
-    <div></div>
+    <div>savat</div>
   )
 }
 

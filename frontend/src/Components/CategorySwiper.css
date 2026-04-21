@@ -1,0 +1,65 @@
+.compact-category-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 5px auto 15px; /* Navbardan keyin juda kichik masofa */
+    padding: 0 10px;
+    overflow: hidden;
+}
+
+.story-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.story-img-circle {
+    width: 60px; /* Telefon uchun juda ixcham */
+    height: 60px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    border: 1.5px solid #e2e8f0;
+    transition: 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.story-card:hover .story-img-circle {
+    border-color: #22c55e;
+    transform: scale(1.05);
+}
+
+.story-img-circle img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+}
+
+.story-name {
+    font-size: 10px; /* Telefon uchun kichik matn */
+    font-weight: 600;
+    color: #334155;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Kompyuter uchun o'lchamlarni biroz kattalashtirish */
+@media (min-width: 1024px) {
+    .story-img-circle {
+        width: 80px;
+        height: 80px;
+    }
+    .story-name {
+        font-size: 12px;
+    }
+    .compact-category-wrapper {
+        margin: 15px auto 25px;
+    }
+}

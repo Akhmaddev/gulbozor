@@ -44,11 +44,11 @@ return [
         ],
         
         'urlManager' => [
-            'scriptUrl'=>'/backend/index.php',
+            'scriptUrl'=>'/backend/web/index.php',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule','controller' => ['navbar'],]
+                ['class' => 'yii\rest\UrlRule','controller' => ['navbar', 'kategoriya', 'gullar'],]
                     
             ],
         ],
