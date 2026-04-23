@@ -1,66 +1,21 @@
 <?php
-
 namespace common\models;
-
 use Yii;
 
-/**
- * This is the model class for table "gullar".
- *
- * @property int $id
- * @property string $gulnomi
- * @property int $gulnarxi
- * @property int $kategoriya_id
- * @property string $gulmalumoti
- * @property string $gulrasmi
- */
-class Gullar extends \yii\db\ActiveRecord
+class Gullar extends \yii\db\ActiveRecord 
 {
+    public static function tableName() { return 'gullar'; }
 
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
-    {
-        return 'gullar';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['gulnomi', 'gulnarxi', 'kategoriya_id', 'gulmalumoti', 'gulrasmi'], 'required'],
-            [['gulnarxi', 'kategoriya_id'], 'integer'],
-            [['gulmalumoti', 'gulrasmi'], 'string'],
-            [['gulnomi'], 'string', 'max' => 90],
+            [['gulnomi', 'gulnarxi', 'kategoriya_id', 'gulmalumoti'], 'required'],
+            [['kategoriya_id'], 'integer'],
+            [['gulnomi', 'gulnarxi', 'gulrasmi'], 'string', 'max' => 255], 
+            [['gulmalumoti'], 'string'],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'gulnomi' => 'Gulnomi',
-            'gulnarxi' => 'Gulnarxi',
-            'kategoriya_id' => 'Kategoriya ID',
-            'gulmalumoti' => 'Gulmalumoti',
-            'gulrasmi' => 'Gulrasmi',
-        ];
+    public function getKategoriya() {
+        return $this->hasOne(Kategoriya::class, ['id' => 'kategoriya_id']);
     }
-
-    /**
-     * {@inheritdoc}
-     * @return GullarQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new GullarQuery(get_called_class());
-    }
-
 }

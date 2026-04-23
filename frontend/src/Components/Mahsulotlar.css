@@ -1,0 +1,180 @@
+.catalog-section {
+    padding: 50px 0;
+    background-color: #f9f9f9;
+}
+
+.custom-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.catalog-title {
+    text-align: center;
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+/* Card dizayni */
+.flower-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    padding: 10px; /* Rasm qisilib qolmasligi uchun ichki bo'shliq */
+}
+
+.flower-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+}
+
+/* Rasm qismi - 1200x1500 formatga moslangan */
+.flower-image-wrapper {
+    width: 100%;
+    aspect-ratio: 4 / 5; /* 1200x1500 (4:5) nisbatni saqlaydi */
+    overflow: hidden;
+    border-radius: 15px;
+    background: #fdfdfd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flower-img {
+    width: 100%;
+    height: 100%;
+    /* Agar rasm Cardni to'liq to'ldirsin desangiz: 'cover'
+       Agar rasm cheti kesilmasin desangiz: 'contain'
+    */
+    object-fit: cover; 
+    transition: transform 0.5s ease;
+}
+
+.flower-card:hover .flower-img {
+    transform: scale(1.05);
+}
+
+/* Ma'lumotlar */
+.flower-details {
+    padding: 15px 10px 5px 10px;
+    text-align: center;
+}
+
+.flower-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #2d3436;
+    margin-bottom: 10px;
+}
+
+.flower-price {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #28a745;
+    margin-bottom: 15px;
+}
+
+/* Batafsil tugmasi */
+.details-btn {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 12px 0;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+    font-size: 0.95rem;
+}
+
+.details-btn:hover {
+    background: #218838;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+}
+
+.loader {
+    text-align: center;
+    padding: 100px;
+    color: #28a745;
+}
+
+/* ... (oldingi kodlar qoladi) ... */
+
+/* Grid tizimini yangilaymiz */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Telefonlar uchun maxsus (768px dan kichik ekranlar) */
+@media (max-width: 768px) {
+    .catalog-section {
+        padding: 20px 0;
+    }
+
+    .catalog-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .product-grid {
+        /* Telefonda 1 qatorda 2 ta karta chiqishi uchun */
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 12px; /* Oradagi masofani kamaytiramiz */
+    }
+
+    .flower-card {
+        padding: 6px; /* Card ichidagi bo'shliqni telefonda kichraytiramiz */
+        border-radius: 12px;
+    }
+
+    .flower-image-wrapper {
+        height: auto;
+        aspect-ratio: 4 / 5; /* 1200x1500 nisbatni telefonda ham saqlaydi */
+    }
+
+    .flower-details {
+        padding: 10px 5px;
+    }
+
+    .flower-name {
+        font-size: 0.95rem; /* Matnni kichraytiramiz */
+        margin-bottom: 5px;
+    }
+
+    .flower-price {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .details-btn {
+        padding: 8px 0;
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+}
+
+/* Juda kichik telefonlar uchun (400px dan kichik) */
+@media (max-width: 400px) {
+    .product-grid {
+        gap: 8px;
+    }
+    
+    .flower-name {
+        font-size: 0.85rem;
+    }
+}

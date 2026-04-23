@@ -1,18 +1,10 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/** @var yii\web\View $this */
-/** @var common\models\Gullar $model */
-
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Gullars', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+$this->title = $model->gulnomi;
 ?>
 <div class="gullar-view">
-
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
@@ -20,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Ochirishga ishonchingiz komilmi?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -32,10 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'gulnomi',
             'gulnarxi',
-            'kategoriya_id',
+            [
+                'attribute' => 'kategoriya_id',
+                'label' => 'Kategoriya',
+                'value' => function($model) {
+                    return $model->kategoriya ? $model->kategoriya->mavzunomi : 'Yoq';
+                }
+            ],
             'gulmalumoti:ntext',
-            'gulrasmi:ntext',
+            'gulrasmi', // Bu yerda rasm nomi matn bo'lib chiqadi
         ],
     ]) ?>
-
 </div>

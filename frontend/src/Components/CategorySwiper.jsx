@@ -26,7 +26,7 @@ const CategorySwiper = () => {
     // API-dan ma'lumot olish
     axios.get('http://gulbozor.loc/backend/kategoriya')
     .then(res => {
-        console.log("Kategoriyalar keldi:", res.data);
+        console.log("Kategoriyalar :", res.data);
         // Faqat bitta setCategories qolsin
         setCategories(res.data);
     })
@@ -58,6 +58,7 @@ const CategorySwiper = () => {
         ))}
       </Swiper>
     </div>
+   
   );
 };
 

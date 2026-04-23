@@ -8,6 +8,7 @@ import Home from './Pages/Home';
 import Savat from './Pages/Savat';
 import Yordamchi from './Pages/Yordamchi';
 
+
 function App() {
   return (
     
