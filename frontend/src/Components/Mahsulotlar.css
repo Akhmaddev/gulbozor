@@ -404,3 +404,184 @@
         width: 140px;
     }
 }
+/* Katalog umumiy */
+.catalog-section { padding: 30px 0; background: #f9f9f9; }
+.custom-container { max-width: 1300px; margin: 0 auto; padding: 0 15px; }
+
+/* Product Grid */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.flower-card {
+    background: #fff; border-radius: 18px; padding: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer;
+    transition: 0.3s ease; border: 1px solid #eee;
+}
+.flower-card:hover { transform: translateY(-5px); }
+
+.flower-img-box {
+    width: 100%; aspect-ratio: 4/5; /* 1200x1500 formatga mos */
+    border-radius: 14px; overflow: hidden; background: #f0f0f0;
+}
+.flower-img-box img { width: 100%; height: 100%; object-fit: cover; }
+
+.flower-info { padding: 12px 5px; text-align: center; }
+.flower-name { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #333; }
+.flower-price { color: #27ae60; font-weight: 800; font-size: 17px; margin-bottom: 12px; }
+.view-btn { width: 100%; padding: 10px; border: none; background: #27ae60; border-radius: 10px; font-weight: 600; cursor: pointer; color: #eee; }
+
+/* MODAL OVERLAY */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+    display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 15px;
+}
+
+/* MODAL CARD */
+.modal-card {
+    background: #fff; width: 100%; max-width: 950px;
+    border-radius: 30px; position: relative; overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Yopish tugmasi */
+.close-x-btn {
+    position: absolute; top: 20px; right: 20px; background: #fff;
+    border: none; cursor: pointer; z-index: 10; border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 5px;
+}
+.close-x-btn img { width: 30px; height: 30px; display: block; }
+
+/* Flex qismlari */
+.modal-content-flex { display: flex; flex-direction: row; }
+
+.modal-image-side { flex: 1; background: #f8f8f8; max-height: 600px; }
+.modal-image-side img { width: 100%; height: 100%; object-fit: cover; }
+
+.modal-details-side { flex: 1.2; padding: 40px; display: flex; flex-direction: column; }
+
+.modal-category-tag { color: #27ae60; font-weight: 700; font-size: 14px; margin-bottom: 10px; }
+.modal-product-title { font-size: 30px; font-weight: 800; color: #222; margin-bottom: 15px; }
+
+.modal-description-box {
+    background: #f7f9fb; padding: 15px; border-radius: 15px;
+    margin-bottom: 20px; flex-grow: 1; overflow-y: auto; max-height: 200px;
+}
+.modal-description-box p { font-size: 15px; color: #555; line-height: 1.6; }
+
+.modal-info-grid { display: flex; gap: 40px; margin-bottom: 30px; border-top: 1px solid #eee; padding-top: 20px; }
+.info-item .label { display: block; font-size: 13px; color: #999; margin-bottom: 5px; }
+.info-item .value { font-size: 22px; font-weight: 800; color: #333; }
+
+/* Footer & Counter */
+.modal-footer-controls { display: flex; gap: 15px; align-items: center; }
+
+.counter-wrapper {
+    display: flex; align-items: center; background: #f0f2f5; border-radius: 14px; padding: 6px;
+}
+.counter-wrapper button {
+    width: 42px; height: 42px; border: none; background: #fff;
+    border-radius: 10px; font-size: 20px; cursor: pointer; transition: 0.2s;
+}
+.counter-wrapper button:disabled { opacity: 0.3; cursor: not-allowed; }
+.count-display { padding: 0 18px; font-weight: 800; font-size: 18px; color: #222; }
+
+.add-to-cart-btn {
+    flex: 1; background: #27ae60; color: #fff; border: none;
+    padding: 16px; border-radius: 14px; font-weight: 700; font-size: 16px; cursor: pointer;
+}
+
+/* TELEFONDA MOSLASHUV (Mobile Responsive) */
+@media (max-width: 768px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    
+    .modal-content-flex { flex-direction: column; }
+    .modal-image-side { height: 280px; width: 100%; }
+    .modal-details-side { padding: 20px; }
+    
+    .modal-card { width: 95%; height: auto; max-height: 92vh; overflow-y: auto; border-radius: 20px; }
+    
+    .modal-product-title { font-size: 20px; margin-bottom: 10px; }
+    .modal-info-grid { gap: 20px; padding-top: 15px; margin-bottom: 20px; }
+    .info-item .value { font-size: 18px; }
+    
+    .modal-footer-controls { flex-direction: column; width: 100%; }
+    .counter-wrapper { width: 100%; justify-content: space-between; }
+    .add-to-cart-btn { width: 100%; padding: 14px; }
+    
+    .close-x-btn { top: 10px; right: 10px; }
+    .close-x-btn img { width: 24px; height: 24px; }
+}
+
+@media (max-width: 480px) {
+    .product-grid { gap: 8px; }
+    .flower-card { padding: 8px; }
+    .flower-name { font-size: 14px; }
+    .flower-price { font-size: 14px; }
+}
+/* Empty State (Topilmaganda) Stillari */
+.empty-state-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.empty-state-content {
+    max-width: 400px;
+    padding: 20px;
+}
+
+.empty-image-wrapper {
+    width: 150px;
+    margin: 0 auto 20px;
+}
+
+.empty-img {
+    width: 200px;
+    position: absolute;
+    top: 40px;
+    right: 550px;
+    height: auto;
+    opacity: 0.6; /* Bir oz xira rangda chiroyli turadi */
+    filter: grayscale(0.5);
+}
+
+.empty-title {
+    font-size: 22px;
+    color: #333;
+    position: absolute;
+    top: 210px;
+    right: 550px;
+    font-weight: 700;
+}
+
+.empty-text {
+    font-size: 15px;
+    color: #888;
+    position: absolute;
+    top: 250px;
+    right: 500px;
+    line-height: 1.5;
+}
+
+/* Mobil uchun moslashuv */
+@media (max-width: 768px) {
+    .empty-state-container {
+        min-height: 300px;
+    }
+    .empty-img {
+        width: 100px;
+    }
+    .empty-title {
+        font-size: 18px;
+    }
+}

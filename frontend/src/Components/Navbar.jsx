@@ -13,7 +13,7 @@ const Navbar = ({ onSearch }) => {
 
                 {/* Logo */}
                 <Link to="/" className="logo">
-                    Gulbozor<span>.uz</span>
+                    Gulbozor
                 </Link>
 
                 {/* Search - Qidiruv */}
