@@ -1,10 +1,18 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\models\Kategoriya;
 
-$form = ActiveForm::begin(); ?>
+/** @var yii\web\View $this */
+/** @var common\models\Gullar $model */
+/** @var yii\widgets\ActiveForm $form */
+?>
+
+<div class="gullar-form">
+
+    <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'gulnomi')->textInput(['maxlength' => true]) ?>
 
@@ -15,6 +23,8 @@ $form = ActiveForm::begin(); ?>
         ['prompt' => 'Kategoriyani tanlang...']
     ) ?>
 
+    <?= $form->field($model, 'soni')->textInput(['type' => 'number', 'min' => 0]) ?>
+
     <?= $form->field($model, 'gulmalumoti')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'gulrasmi')->textInput(['maxlength' => true]) ?>
@@ -23,4 +33,6 @@ $form = ActiveForm::begin(); ?>
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
+
+</div>

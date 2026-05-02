@@ -784,3 +784,21 @@
     font-size: 18px;
   }
 }
+/* Omborda qolmagan bo'lsa qiymatni qizil qilish */
+.value.out-of-stock {
+  color: #e74c3c !important;
+  font-weight: bold;
+}
+
+/* Savatga qo'shish tugmasi o'chgan holati */
+.add-to-cart-btn:disabled {
+  background-color: #bdc3c7 !important;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Counter tugmalari o'chgan holati */
+.counter-wrapper button:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}

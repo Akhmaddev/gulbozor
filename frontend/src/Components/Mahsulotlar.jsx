@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Mahsulotlar.css";
-import emptyIcon from "../assets/empty.png"; // Bo'sh holat rasmi
+import emptyIcon from "../assets/empty.png";
 import closeIcon from "../assets/close.png";
 
 const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
@@ -27,6 +27,7 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
 
   const increment = (e) => {
     e.stopPropagation();
+    // Bazadagi 'soni' ustuni bilan solishtirish
     if (count < Number(selectedGul.soni)) setCount((prev) => prev + 1);
   };
 
@@ -40,10 +41,42 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
     return cat ? cat.nomi : "Kategoriya";
   };
 
+  // SAVATGA QO'SHISH FUNKSIYASI
+  const handleAddToCart = () => {
+    if (!selectedGul || Number(selectedGul.soni) === 0) {
+      alert("Kechirasiz, ushbu mahsulot omborda qolmagan.");
+      return;
+    }
+
+    const cartItem = {
+      id: selectedGul.id,
+      nomi: selectedGul.gulnomi,
+      narxi: selectedGul.gulnarxi,
+      rasmi: selectedGul.gulrasmi,
+      miqdori: count,
+      jamiNarxi: count * Number(selectedGul.gulnarxi)
+    };
+
+    // LocalStorage dan mavjud savatni olish
+    let currentCart = JSON.parse(localStorage.getItem("savat")) || [];
+    
+    // Agar mahsulot savatda bo'lsa, miqdorini yangilash
+    const existingIndex = currentCart.findIndex(item => item.id === cartItem.id);
+    if (existingIndex > -1) {
+      currentCart[existingIndex].miqdori += count;
+      currentCart[existingIndex].jamiNarxi = currentCart[existingIndex].miqdori * Number(selectedGul.gulnarxi);
+    } else {
+      currentCart.push(cartItem);
+    }
+
+    localStorage.setItem("savat", JSON.stringify(currentCart));
+    alert(`${selectedGul.gulnomi} savatga qo'shildi!`);
+    setSelectedGul(null); // Modalni yopish
+  };
+
   return (
     <section className="catalog-section">
       <div className="custom-container">
-        {/* Agar mahsulotlar bo'lsa Gridni chiqaradi, bo'lmasa Empty State */}
         {gullar.length > 0 ? (
           <div className={`product-grid ${isRefreshing ? "refreshing" : ""}`}>
             {gullar.map((gul) => (
@@ -72,7 +105,6 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
             ))}
           </div>
         ) : (
-          /* EMPTY STATE - HECH NARSA TOPILMAGANDA */
           !isRefreshing && (
             <div className="empty-state-container">
               <div className="empty-state-content">
@@ -89,7 +121,6 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
           )
         )}
 
-        {/* MODAL OYNA QISMI (O'zgarishsiz qoldi) */}
         {selectedGul && (
           <div className="modal-overlay" onClick={() => setSelectedGul(null)}>
             <div className="modal-card" onClick={(e) => e.stopPropagation()}>
@@ -126,7 +157,10 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
                     </div>
                     <div className="info-item">
                       <span className="label">Omborda:</span>
-                      <span className="value">{selectedGul.soni} dona</span>
+                      {/* Soni 0 bo'lsa qizil rangda chiqadi */}
+                      <span className={`value ${Number(selectedGul.soni) === 0 ? "out-of-stock" : ""}`}>
+                        {selectedGul.soni || 0} dona
+                      </span>
                     </div>
                   </div>
                   <div className="modal-footer-controls">
@@ -142,8 +176,13 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
                         +
                       </button>
                     </div>
-                    <button className="add-to-cart-btn">
-                      Savatga qo'shish
+                    {/* Omborda 0 bo'lsa tugma o'chadi */}
+                    <button 
+                      className="add-to-cart-btn" 
+                      onClick={handleAddToCart}
+                      disabled={Number(selectedGul.soni) === 0}
+                    >
+                      {Number(selectedGul.soni) === 0 ? "Zaxirada yo'q" : "Savatga qo'shish"}
                     </button>
                   </div>
                 </div>

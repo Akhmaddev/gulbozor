@@ -34,15 +34,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'gulnomi',
             'gulnarxi',
             'kategoriya_id',
+            // Bazadagi 'soni' ustunini jadvalda chiqarish
+            'soni', 
             'gulmalumoti:ntext',
-            //'gulrasmi:ntext',
+            // 'gulrasmi:ntext',
+
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Gullar $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                    
-                 }
-
+                }
             ],
         ],
     ]); ?>

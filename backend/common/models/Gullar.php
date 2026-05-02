@@ -8,9 +8,9 @@ class Gullar extends \yii\db\ActiveRecord
 
     public function rules() {
         return [
-            [['gulnomi', 'gulnarxi', 'kategoriya_id', 'gulmalumoti'], 'required'],
-            [['kategoriya_id'], 'integer'],
-            [['gulnomi', 'gulnarxi', 'gulrasmi'], 'string', 'max' => 255], 
+            [['gulnomi', 'gulnarxi', 'kategoriya_id', 'gulmalumoti', 'soni'], 'required'],
+            [['kategoriya_id', 'soni'], 'integer'],
+            [['gulnomi', 'gulnarxi', 'gulrasmi'], 'string', 'max' => 255],
             [['gulmalumoti'], 'string'],
         ];
     }
