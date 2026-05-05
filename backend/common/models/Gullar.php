@@ -2,7 +2,7 @@
 namespace common\models;
 use Yii;
 
-class Gullar extends \yii\db\ActiveRecord 
+class Gullar extends \yii\db\ActiveRecord
 {
     public static function tableName() { return 'gullar'; }
 
