@@ -5,8 +5,8 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\models\Kategoriya;
 
-/** @var yii\web\View $this */
-/** @var common\models\Gullar $model */
+/**  @var yii\web\View $this */
+/**  @var common\models\Gullar $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 

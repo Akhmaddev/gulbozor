@@ -8,6 +8,7 @@ import Home from './Pages/Home';
 import Savat from './Pages/Savat';
 import Yordamchi from './Pages/Yordamchi';
 
+
 function App() {
   // 1. Qidiruv so'zini saqlash uchun state yaratamiz
   const [searchTerm, setSearchTerm] = useState('');
@@ -25,7 +26,7 @@ function App() {
           <Route path="/savat" element={<Savat />} />
           <Route path="/yordamchi" element={<Yordamchi />} />
         </Routes>
-
+            
         <Footer />
       </div>
     </Router>
