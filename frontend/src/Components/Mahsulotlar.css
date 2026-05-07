@@ -1,3 +1,7 @@
+@import url('https://cdn.jsdelivr.net/gh/devchauhann/fonts@v1.1.0/cdn/v1/css/all.css');
+*{
+  font-family: 'Anthropic Sans', sans-serif;
+}
 .catalog-section {
   padding: 50px 0;
   background-color: #f9f9f9;
@@ -319,8 +323,7 @@
   opacity: 0.5;
 }
 .catalog-title {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  
   color: #28a745;
   text-shadow: 0 0 0px gray;
 }
@@ -459,7 +462,7 @@
   color: #27ae60;
   font-size: 17px;
   margin-bottom: 12px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  
 }
 .view-btn {
   width: 100%;
@@ -802,3 +805,77 @@
   color: #ccc;
   cursor: not-allowed;
 }
+
+/* Modal Card Ixchamligi */
+.ixcham-modal {
+  width: 95%;
+  max-width: 500px; /* Telefonda juda katta bo'lmasligi uchun */
+  max-height: 90vh;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  padding: 0;
+}
+
+.modal-content-scrollable {
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.close-x-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Jami Narx Stili */
+.total-price-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+
+.total-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.total-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #27ae60; /* Yashil rang narx uchun */
+}
+
+/* Footer Control - Mobil uchun */
+.modal-footer-controls {
+  display: flex;
+  flex-direction: column; /* Telefonda ustma-ust tushishi uchun */
+  gap: 10px;
+}
+
+@media (min-width: 480px) {
+  .modal-footer-controls {
+      flex-direction: row; /* Kattaroq ekranda yonma-yon */
+  }
+}
+
+.add-to-cart-btn {
+  flex: 1;
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+

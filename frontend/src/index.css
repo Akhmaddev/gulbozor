@@ -1,8 +1,12 @@
+
+@import url('https://cdn.jsdelivr.net/gh/devchauhann/fonts@v1.1.0/cdn/v1/css/all.css');
+
 /* Butun sahifa balandligini nazorat qilish */
 html, body, #root {
     height: 100%;
     margin: 0;
     padding: 0;
+    
   }
   
   .sayt {
@@ -10,6 +14,7 @@ html, body, #root {
     flex-direction: column; /* Elementlarni vertikal taxlaydi */
     min-height: 100vh;      /* Sayt kamida ekran bo'yi darajasida bo'ladi */
     background-color: white; /* Qora fon */
+    font-family: 'Anthropic Sans', sans-serif;
   }
   
   /* Navbar va Footer orasidagi asosiy qism */
