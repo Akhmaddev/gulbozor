@@ -6,7 +6,7 @@ import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
 import Home from './Pages/Home';
 import Savat from './Pages/Savat';
-import Yordamchi from './Pages/Yordamchi';
+import Yordamchi from './Pages/YordamchiAi';
 
 
 function App() {
