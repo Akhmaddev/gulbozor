@@ -1,0 +1,373 @@
+/* ═══════════════════════════════════════════════
+   YordamchiAi — Responsive Chat UI
+   Mobil: mobil header ko'rinadi, desktop yashiriladi
+   PC:    desktop header ko'rinadi, mobil yashiriladi
+   ═══════════════════════════════════════════════ */
+
+   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+   :root {
+     --green-primary : #2eb872;
+     --green-dark    : #1a9457;
+     --green-light   : #e8f8f1;
+     --green-bubble  : #d4f4e5;
+     --white         : #ffffff;
+     --gray-input    : #f4f6f5;
+     --gray-border   : #dde8e3;
+     --text-dark     : #0f2d1e;
+     --text-muted    : #6b8f7a;
+     --radius-card   : 22px;
+     --radius-bubble : 18px;
+     --radius-input  : 50px;
+     --shadow-card   : 0 4px 28px rgba(46, 184, 114, 0.13);
+     --shadow-btn    : 0 4px 16px rgba(46, 184, 114, 0.38);
+   }
+   
+   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+   
+   /* ════════════════════════════
+      ROOT — card wrapper
+      ════════════════════════════ */
+   .yai-root {
+     display: flex;
+     flex-direction: column;
+     width: 100%;
+     max-width: 860px;
+     height: 100vh;
+     max-height: 720px;
+     background: var(--white);
+     border-radius: var(--radius-card);
+     box-shadow: var(--shadow-card);
+     border: 1.5px solid var(--gray-border);
+     overflow: hidden;
+   }
+   
+   /* ════════════════════════════
+      MOBILE HEADER
+      Default: ko'rinadi (mobil uchun)
+      PC da: yashiriladi
+      ════════════════════════════ */
+   .yai-mobile-header {
+     display: flex;           /* MOBIL: ko'rinadi */
+     flex-direction: column;
+     align-items: center;
+     gap: 8px;
+     padding: 20px 16px 16px;
+     border-bottom: 1.5px solid var(--green-light);
+     background: var(--white);
+     flex-shrink: 0;
+   }
+   
+   .yai-mobile-name {
+     font-size: 18px;
+     font-weight: 800;
+     color: var(--text-dark);
+     letter-spacing: -0.3px;
+   }
+   
+   /* ════════════════════════════
+      DESKTOP HEADER
+      Default: yashiriladi (mobil uchun)
+      PC da: ko'rinadi
+      ════════════════════════════ */
+   .yai-desktop-header {
+     display: none;           /* MOBIL: yashiriladi */
+     border-bottom: 1.5px solid var(--green-light);
+     flex-shrink: 0;
+     min-height: 150px;
+   }
+   
+   .yai-desktop-profile {
+     display: flex;
+     align-items: center;
+     gap: 16px;
+     padding: 22px 26px;
+     min-width: 270px;
+     border-right: 1.5px solid var(--green-light);
+   }
+   
+   .yai-desktop-info {
+     display: flex;
+     flex-direction: column;
+     gap: 6px;
+   }
+   
+   .yai-desktop-name {
+     font-size: 23px;
+     font-weight: 800;
+     color: var(--text-dark);
+     letter-spacing: -0.4px;
+   }
+   
+   .yai-status {
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     font-size: 13px;
+     font-weight: 700;
+     color: var(--green-primary);
+   }
+   
+   .yai-dot {
+     width: 9px;
+     height: 9px;
+     border-radius: 50%;
+     background: var(--green-primary);
+     animation: pulse-dot 2s infinite;
+   }
+   
+   @keyframes pulse-dot {
+     0%, 100% { opacity: 1; transform: scale(1); }
+     50%       { opacity: 0.55; transform: scale(0.78); }
+   }
+   
+   /* Banner */
+   .yai-banner-wrap {
+     flex: 1;
+     overflow: hidden;
+     background: var(--green-light);
+   }
+   
+   .yai-banner {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     display: block;
+   }
+   
+   /* ════════════════════════════
+      AVATAR
+      ════════════════════════════ */
+   .yai-avatar-wrap {
+     width: 70px;
+     height: 70px;
+     border-radius: 50%;
+     overflow: hidden;
+     border: 3px solid var(--green-primary);
+     flex-shrink: 0;
+     background: var(--green-light);
+     box-shadow: 0 2px 12px rgba(46, 184, 114, 0.22);
+   }
+   
+   .yai-avatar-wrap.large {
+     width: 80px;
+     height: 80px;
+   }
+   
+   .yai-avatar {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     display: block;
+   }
+   
+   /* ════════════════════════════
+      CHAT AREA
+      ════════════════════════════ */
+   .yai-chat-area {
+     flex: 1;
+     overflow-y: auto;
+     padding: 18px 16px;
+     display: flex;
+     flex-direction: column;
+     gap: 14px;
+     scrollbar-width: thin;
+     scrollbar-color: var(--green-light) transparent;
+   }
+   
+   .yai-chat-area::-webkit-scrollbar       { width: 4px; }
+   .yai-chat-area::-webkit-scrollbar-thumb { background: var(--green-light); border-radius: 4px; }
+   
+   /* ════════════════════════════
+      BUBBLES
+      ════════════════════════════ */
+   .yai-bubble-avatar {
+     width: 34px;
+     height: 34px;
+     border-radius: 50%;
+     border: 2px solid var(--green-primary);
+     object-fit: cover;
+     flex-shrink: 0;
+     align-self: flex-end;
+     margin-bottom: 2px;
+   }
+   
+   .yai-bubble-wrap {
+     display: flex;
+     align-items: flex-end;
+     gap: 8px;
+   }
+   
+   .yai-bubble-wrap.user { flex-direction: row-reverse; }
+   
+   .yai-bubble {
+     max-width: 75%;
+     padding: 12px 16px;
+     font-size: 14.5px;
+     font-weight: 600;
+     line-height: 1.55;
+     border-radius: var(--radius-bubble);
+     word-break: break-word;
+   }
+   
+   .yai-bubble.bot {
+     background: var(--green-light);
+     color: var(--text-dark);
+     border-bottom-left-radius: 4px;
+     border: 1px solid var(--green-bubble);
+   }
+   
+   .yai-bubble.user {
+     background: var(--green-primary);
+     color: var(--white);
+     border-bottom-right-radius: 4px;
+   }
+   
+   /* Typing dots */
+   .yai-typing {
+     display: flex;
+     align-items: center;
+     gap: 5px;
+     padding: 14px 18px;
+     min-width: 64px;
+   }
+   
+   .yai-typing span {
+     display: inline-block;
+     width: 8px;
+     height: 8px;
+     border-radius: 50%;
+     background: var(--green-primary);
+     animation: bounce 1.3s infinite ease-in-out;
+   }
+   
+   .yai-typing span:nth-child(1) { animation-delay: 0s; }
+   .yai-typing span:nth-child(2) { animation-delay: 0.18s; }
+   .yai-typing span:nth-child(3) { animation-delay: 0.36s; }
+   
+   @keyframes bounce {
+     0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+     30%            { transform: translateY(-7px); opacity: 1; }
+   }
+   
+   /* ════════════════════════════
+      INPUT BAR
+      ════════════════════════════ */
+   .yai-input-bar {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     padding: 14px 16px;
+     border-top: 1.5px solid var(--green-light);
+     background: var(--white);
+     flex-shrink: 0;
+   }
+   
+   .yai-input {
+     flex: 1;
+     height: 48px;
+     border-radius: var(--radius-input);
+     border: 1.5px solid var(--gray-border);
+     background: var(--gray-input);
+     padding: 0 20px;
+     font-family: 'Nunito', sans-serif;
+     font-size: 14px;
+     font-weight: 600;
+     color: var(--text-dark);
+     outline: none;
+     transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+   }
+   
+   .yai-input::placeholder { color: var(--text-muted); font-weight: 500; }
+   
+   .yai-input:focus {
+     border-color: var(--green-primary);
+     box-shadow: 0 0 0 3px rgba(46, 184, 114, 0.13);
+     background: var(--white);
+   }
+   
+   .yai-send-btn {
+     width: 48px;
+     height: 48px;
+     border-radius: 50%;
+     border: none;
+     background: var(--green-primary);
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     flex-shrink: 0;
+     box-shadow: var(--shadow-btn);
+     transition: background 0.2s;
+   }
+   
+   .yai-send-btn:hover { background: var(--green-dark); }
+   
+   .yai-send-icon {
+     width: 22px;
+     height: 22px;
+     object-fit: contain;
+     filter: brightness(0) invert(1);
+   }
+   
+   /* ════════════════════════════
+      RESPONSIVE BREAKPOINTS
+      ════════════════════════════ */
+   
+   /* ── DESKTOP (768px dan katta) ── */
+   @media (min-width: 768px) {
+     body {
+       padding: 24px;
+     }
+   
+     .yai-root {
+       height: calc(100vh - 48px);
+       max-height: 760px;
+     }
+   
+     /* Desktop headerini ko'rsat */
+     .yai-desktop-header {
+       display: flex;   /* ← PC da ko'rinadi */
+     }
+   
+     /* Mobil headerini yashir */
+     .yai-mobile-header {
+       display: none;   /* ← PC da yashiriladi */
+     }
+   
+     .yai-chat-area {
+       padding: 22px 26px;
+       gap: 16px;
+     }
+   
+     .yai-input-bar {
+       padding: 16px 26px;
+     }
+   
+     .yai-bubble {
+       max-width: 68%;
+       font-size: 15px;
+     }
+   
+     .yai-bubble-avatar {
+       width: 38px;
+       height: 38px;
+     }
+   }
+   
+   /* ── MOBIL (768px dan kichik) ── */
+   @media (max-width: 767px) {
+     body {
+       padding: 0;
+       align-items: stretch;
+     }
+   
+     .yai-root {
+       max-width: 100%;
+       height: 100vh;
+       max-height: 100vh;
+       border-radius: 0;
+       border: none;
+     }
+   }
