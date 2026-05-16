@@ -10,6 +10,7 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
   const [selectedGul, setSelectedGul] = useState(null);
   const [count, setCount] = useState(1);
 
+  // Ma'lumotlarni backend API dan yuklab olish
   useEffect(() => {
     setIsRefreshing(true);
     let url = `http://gulbozor.loc/backend/gullar?q=${searchTerm || ""}`;
@@ -19,21 +20,26 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
     axios
       .get(url)
       .then((res) => {
-        setGullar(res.data);
+        setGullar(res.data || []);
         setIsRefreshing(false);
       })
       .catch(() => setIsRefreshing(false));
   }, [categoryId, searchTerm]);
 
+  // Modal ichidagi sanagich uchun (+)
   const increment = (e) => {
     e.stopPropagation();
-    // Bazadagi 'soni' ustuni bilan solishtirish
-    if (count < Number(selectedGul.soni)) setCount((prev) => prev + 1);
+    if (selectedGul && count < Number(selectedGul.soni)) {
+      setCount((prev) => prev + 1);
+    }
   };
 
+  // Modal ichidagi sanagich uchun (-)
   const decrement = (e) => {
     e.stopPropagation();
-    if (count > 1) setCount((prev) => prev - 1);
+    if (count > 1) {
+      setCount((prev) => prev - 1);
+    }
   };
 
   const getCatName = (id) => {
@@ -41,7 +47,7 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
     return cat ? cat.nomi : "Kategoriya";
   };
 
-  // SAVATGA QO'SHISH FUNKSIYASI
+  // SAVATGA QO'SHISH FUNKSIYASI (Faqat modal ichidagi tugma bosilganda ishlaydi)
   const handleAddToCart = () => {
     if (!selectedGul || Number(selectedGul.soni) === 0) {
       alert("Kechirasiz, ushbu mahsulot omborda qolmagan.");
@@ -60,18 +66,31 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
     // LocalStorage dan mavjud savatni olish
     let currentCart = JSON.parse(localStorage.getItem("savat")) || [];
     
-    // Agar mahsulot savatda bo'lsa, miqdorini yangilash
+    // Agar mahsulot savatda oldindan bo'lsa, miqdorini yangilash
     const existingIndex = currentCart.findIndex(item => item.id === cartItem.id);
     if (existingIndex > -1) {
-      currentCart[existingIndex].miqdori += count;
-      currentCart[existingIndex].jamiNarxi = currentCart[existingIndex].miqdori * Number(selectedGul.gulnarxi);
+      const yangiMiqdor = currentCart[existingIndex].miqdori + count;
+      
+      if (yangiMiqdor > Number(selectedGul.soni)) {
+        alert(`Kechirasiz, omborda jami ${selectedGul.soni} dona mahsulot bor. Savatda allaqachon ${currentCart[existingIndex].miqdori} dona mavjud.`);
+        return;
+      }
+      
+      currentCart[existingIndex].miqdori = yangiMiqdor;
+      currentCart[existingIndex].jamiNarxi = yangiMiqdor * Number(selectedGul.gulnarxi);
     } else {
       currentCart.push(cartItem);
     }
 
+    // LocalStorage ga yozish
     localStorage.setItem("savat", JSON.stringify(currentCart));
-    alert(`${selectedGul.gulnomi} savatga qo'shildi!`);
-    setSelectedGul(null); // Modalni yopish
+    
+    // Header yoki Savat komponenti darhol yangilanishi uchun custom event chaqiramiz
+    window.dispatchEvent(new Event("cartUpdated"));
+    
+    // Siz so'ragan alert xabarnomasi
+    alert(`${selectedGul.gulnomi} savatga muvaffaqiyatli qo'shildi!`);
+    setSelectedGul(null); // Oynani yopish
   };
 
   return (
@@ -88,12 +107,15 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
                   setCount(1);
                 }}
               >
+                {/* Mahsulot Rasmi */}
                 <div className="flower-img-box">
                   <img
                     src={`http://gulbozor.loc/frontend/web/images/${gul.gulrasmi}`}
                     alt={gul.gulnomi}
                   />
                 </div>
+                
+                {/* Mahsulot Ma'lumotlari */}
                 <div className="flower-info">
                   <h3 className="flower-name">{gul.gulnomi}</h3>
                   <p className="flower-price">
@@ -113,14 +135,15 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
                 </div>
                 <h3 className="empty-title">Hech narsa topilmadi</h3>
                 <p className="empty-text">
-                  Siz qidirgan gul malumotlari saytda mavjud emas <br /> Boshqa
-                  kategoriyalarni sinab ko'ring. 
+                  Siz qidirgan gul ma'lumotlari saytda mavjud emas. <br /> 
+                  Boshqa kategoriyalarni sinab ko'ring.
                 </p>
               </div>
             </div>
           )
         )}
 
+        {/* BATAFSIL MODAL OYNASI */}
         {selectedGul && (
           <div className="modal-overlay" onClick={() => setSelectedGul(null)}>
             <div className="modal-card" onClick={(e) => e.stopPropagation()}>
@@ -131,12 +154,15 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
                 <img src={closeIcon} alt="X" />
               </button>
               <div className="modal-content-flex">
+                {/* Modal Rasm qismi */}
                 <div className="modal-image-side">
                   <img
                     src={`http://gulbozor.loc/frontend/web/images/${selectedGul.gulrasmi}`}
-                    alt=""
+                    alt={selectedGul.gulnomi}
                   />
                 </div>
+                
+                {/* Modal Tafsilotlar qismi */}
                 <div className="modal-details-side">
                   <span className="modal-category-tag">
                     {getCatName(selectedGul.kategoriya_id)}
@@ -144,10 +170,10 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
                   <h2 className="modal-product-title">{selectedGul.gulnomi}</h2>
                   <div className="modal-description-box">
                     <p>
-                      {selectedGul.gulmalumoti ||
-                        "Ma'lumot tez kunda qo'shiladi."}
+                      {selectedGul.gulmalumoti || "Ma'lumot tez kunda qo'shiladi."}
                     </p>
                   </div>
+                  
                   <div className="modal-info-grid">
                     <div className="info-item">
                       <span className="label">Narxi:</span>
@@ -157,12 +183,13 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
                     </div>
                     <div className="info-item">
                       <span className="label">Omborda:</span>
-                      {/* Soni 0 bo'lsa qizil rangda chiqadi */}
                       <span className={`value ${Number(selectedGul.soni) === 0 ? "out-of-stock" : ""}`}>
                         {selectedGul.soni || 0} dona
                       </span>
                     </div>
                   </div>
+
+                  {/* Bosharuv paneli (Soni va Qo'shish) */}
                   <div className="modal-footer-controls">
                     <div className="counter-wrapper">
                       <button onClick={decrement} disabled={count <= 1}>
@@ -176,7 +203,7 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
                         +
                       </button>
                     </div>
-                    {/* Omborda 0 bo'lsa tugma o'chadi */}
+                    
                     <button 
                       className="add-to-cart-btn" 
                       onClick={handleAddToCart}

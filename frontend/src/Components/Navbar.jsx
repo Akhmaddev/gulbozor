@@ -35,7 +35,7 @@ const Navbar = ({ onSearch }) => {
                     <Link to="/savat" className="action-link">
                         <div className="icon-box">
                             <img src={savatIcon} alt="Savat" className="nav-custom-icon" />
-                            <span className="badge">0</span>
+                            
                         </div>
                         <span className="link-label">Savat</span>
                     </Link>
