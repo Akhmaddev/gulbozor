@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
+import Til from '../Components/Languageswitcher'
 
 import savatIcon from '../assets/savat.png';
 import yordamchiIcon from '../assets/yordamchi.png';
@@ -46,6 +47,7 @@ const Navbar = ({ onSearch }) => {
                         </div>
                         <span className="link-label">Yordamchi</span>
                     </Link>
+                    <Til/>
                 </div>
 
             </div>

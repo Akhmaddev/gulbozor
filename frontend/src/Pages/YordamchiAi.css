@@ -41,6 +41,7 @@
      box-shadow: var(--shadow-card);
      border: 1.5px solid var(--gray-border);
      overflow: hidden;
+     margin: auto;
    }
    
    /* ════════════════════════════

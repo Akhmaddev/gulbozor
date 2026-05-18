@@ -751,7 +751,7 @@
   width: 200px;
   position: absolute;
   top: 40px;
-  right: 550px;
+  right: 560px;
   height: auto;
   opacity: 0.6; /* Bir oz xira rangda chiroyli turadi */
   filter: grayscale(0.5);
@@ -761,7 +761,7 @@
   font-size: 22px;
   color: #333;
   position: absolute;
-  top: 210px;
+  top: 220px;
   right: 550px;
   font-weight: 700;
 }
