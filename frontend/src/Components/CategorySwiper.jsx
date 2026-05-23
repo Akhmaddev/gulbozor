@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import './CategorySwiper.css';
 
-// Rasmlar importi
+
 import img1 from '../assets/xonaki.png';
 import img2 from '../assets/daraxtlar.png';
 import img3 from '../assets/butalar.png';
@@ -15,7 +15,7 @@ import img7 from '../assets/tuproq.png';
 import img8 from '../assets/aksessuar.png';
 import allFlowersImg from '../assets/barchasi.png';
 
-// ... oldingi importlar qoladi ...
+
 
 const CategorySwiper = ({ onSelectCategory }) => { // onSelectCategory propini qo'shdik
   const [categories, setCategories] = useState([]);
@@ -61,7 +61,7 @@ const CategorySwiper = ({ onSelectCategory }) => { // onSelectCategory propini q
             {/* 2. Span o'rniga rasm qoyamiz */}
             <img src={allFlowersImg} alt="Barchasi" />
         </div>
-        <span className="story-name">Barchasi</span>
+        <span className="story-name">hammasi</span>
     </div>
 </SwiperSlide>
 

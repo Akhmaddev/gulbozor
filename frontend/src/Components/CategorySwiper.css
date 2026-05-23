@@ -15,7 +15,7 @@
 }
 
 .story-img-circle {
-    width: 60px; /* Telefon uchun juda ixcham */
+    width: 60px;
     height: 60px;
     background: #ffffff;
     border-radius: 50%;
@@ -40,7 +40,7 @@
 }
 
 .story-name {
-    font-size: 10px; /* Telefon uchun kichik matn */
+    font-size: 10px; 
     font-weight: 600;
     color: #334155;
     text-align: center;
@@ -50,7 +50,7 @@
     text-overflow: ellipsis;
 }
 
-/* Kompyuter uchun o'lchamlarni biroz kattalashtirish */
+
 @media (min-width: 1024px) {
     .story-img-circle {
         width: 80px;

@@ -31,7 +31,7 @@ const Navbar = ({ onSearch }) => {
                     </button>
                 </div>
 
-                {/* Actions - Savat va Yordamchi */}
+       
                 <div className="nav-actions">
                     <Link to="/savat" className="action-link">
                         <div className="icon-box">

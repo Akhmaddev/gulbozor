@@ -3,7 +3,7 @@ namespace backend\controllers;
 
 use yii\rest\ActiveController;
 use yii\data\ActiveDataProvider;
-use common\models\gullar; // Если имя модели начинается с маленькой буквы, оставьте так
+use common\models\gullar; 
 
 class GullarController extends ActiveController
 {
@@ -13,7 +13,7 @@ class GullarController extends ActiveController
     {
         $behaviors = parent::behaviors();
 
-        // CORS filter - для подключения фронтенда (например, React)
+        
         $behaviors['corsFilter'] = [
             'class' => \yii\filters\Cors::class,
         ];

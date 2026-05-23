@@ -140,7 +140,7 @@ const Savat = () => {
             <div className="savat-summary-panel">
               <h3 className="summary-title">Buyurtma Hisobi</h3>
               <div className="summary-row">
-                <span>Gullar turi:</span>
+                <span>Maxsulotlar turi:</span>
                 <span>{cartItems.length} xil</span>
               </div>
               <div className="summary-row total-row">

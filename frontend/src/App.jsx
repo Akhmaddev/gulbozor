@@ -10,17 +10,17 @@ import Yordamchi from './Pages/YordamchiAi';
 
 
 function App() {
-  // 1. Qidiruv so'zini saqlash uchun state yaratamiz
+  
   const [searchTerm, setSearchTerm] = useState('');
 
   return (
     <Router>
       <div className='sayt'>
-        {/* 2. Navbar-ga onSearch funksiyasini uzatamiz */}
+        
         <Navbar onSearch={(val) => setSearchTerm(val)} />
 
         <Routes>
-          {/* 3. Home sahifasiga qidiruv so'zini prop sifatida beramiz */}
+          
           <Route path="/" element={<Home searchTerm={searchTerm} />} />
           
           <Route path="/savat" element={<Savat />} />
