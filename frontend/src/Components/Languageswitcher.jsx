@@ -183,6 +183,7 @@ export default function LanguageSwitcher() {
         }
 
         .ls-button {
+        margin-left: 100px;
           display: inline-flex;
           align-items: center;
           gap: 8px;
