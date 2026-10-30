@@ -8,7 +8,7 @@ const Footer = () => {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
-  // Bazadan kategoriyalarni yuklab olish (Kategoriya swiper bilan bir xil)
+  // Bazadan kategoriyalarni yuklab olish (o'zgarmagan)
   useEffect(() => {
     axios.get('http://gulbozor.loc/backend/kategoriya')
       .then(res => {
@@ -17,33 +17,32 @@ const Footer = () => {
       .catch(err => console.error("Futer uchun API yuklanmadi:", err));
   }, []);
 
-  // Kategoriya bosilganda Home sahifasiga query parametr bilan o'tkazish
+  // Kategoriya bosilganda Home sahifasiga o'tkazish (o'zgarmagan)
   const handleCategoryClick = (id) => {
     if (id === null) {
       navigate('/');
     } else {
       navigate(`/?category=${id}`);
     }
-    // Sahifani tepaga silliq ko'tarish
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Ijtimoiy tarmoqlar ro'yxati (Font Awesome ikonkalari bilan)
+  // Ijtimoiy tarmoqlar (linklar o'zgarmagan, faqat har biriga o'z rangi qo'shildi)
   const socialMedia = [
-    { name: 'Telegram', icon: 'fab fa-telegram-plane', link: 'https://t.me/gulbozor_uz' },
-    { name: 'Instagram', icon: 'fab fa-instagram', link: 'https://instagram.com/gulbozor_uz_optom' },
-    { name: 'YouTube', icon: 'fab fa-youtube', link: 'https://youtube.com/yourchannel' },
-    { name: 'Facebook', icon: 'fab fa-facebook-f', link: 'https://facebook.com/yourpage' },
-    { name: 'WeChat', icon: 'fab fa-weixin', link: '#wechat' }
+    { name: 'Telegram',  icon: 'fab fa-telegram-plane', link: 'https://t.me/gulbozor_uz',                        color: '#29a9eb' },
+    { name: 'Instagram', icon: 'fab fa-instagram',      link: 'https://instagram.com/gulbozor_uz_optom',         color: '#e1306c' },
+    { name: 'YouTube',   icon: 'fab fa-youtube',        link: 'https://youtube.com/yourchannel',                 color: '#ff3d3d' },
+    { name: 'Facebook',  icon: 'fab fa-facebook-f',     link: 'https://facebook.com/yourpage',                   color: '#1877f2' },
+    { name: 'WeChat',    icon: 'fab fa-weixin',         link: '#wechat',                                         color: '#07c160' }
   ];
 
   return (
     <footer className="gulbozor-footer">
       <div className="footer-main-wrapper">
-        
-        {/* --- CHAP TOMON: LOGO VA IJTIMOIY TARMOQLAR --- */}
-        <div className="footer-left-block">
-          <motion.div 
+
+        {/* --- CHAP: LOGO VA IJTIMOIY TARMOQLAR --- */}
+        <div className="footer-left-block footer-glass">
+          <motion.div
             className="footer-logo-box"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
@@ -56,18 +55,20 @@ const Footer = () => {
             <div className="social-icons-row">
               {socialMedia.map((social, index) => (
                 <motion.a
-                  key={index}
+                  key={social.name}
                   href={social.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="social-icon-item"
-                  whileHover={{ y: -5 }}
+                  style={{ '--brand': social.color }}
+                  aria-label={social.name}
+                  whileTap={{ scale: 0.93 }}
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: index * 0.08 }}
                 >
                   <div className="icon-circle">
-                    <i className={social.icon}></i>
+                    <i className={social.icon} aria-hidden="true"></i>
                   </div>
                   <span className="icon-name">{social.name}</span>
                 </motion.a>
@@ -76,26 +77,24 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* --- O'NG TOMON: KATEGORIYALAR SETKASI (2 USTUNLI) --- */}
-        <div className="footer-right-block">
+        {/* --- O'NG: KATEGORIYALAR --- */}
+        <div className="footer-right-block footer-glass">
           <h4 className="section-title">kategoriyalar</h4>
           <div className="footer-categories-grid">
-            {/* "Barchasi" tugmasi */}
-            <motion.button 
+            <motion.button
               className="footer-category-btn"
               onClick={() => handleCategoryClick(null)}
-              whileHover={{ x: 5, backgroundColor: '#22c55e', color: '#111827' }}
+              whileTap={{ scale: 0.97 }}
             >
               Barchasi
             </motion.button>
 
-            {/* Dinamik kategoriyalar */}
             {categories.map((item) => (
               <motion.button
                 key={item.id}
                 className="footer-category-btn"
                 onClick={() => handleCategoryClick(item.id)}
-                whileHover={{ x: 5, backgroundColor: '#22c55e', color: '#111827' }}
+                whileTap={{ scale: 0.97 }}
               >
                 {item.mavzunomi}
               </motion.button>
@@ -105,7 +104,7 @@ const Footer = () => {
 
       </div>
 
-      {/* --- PASTKI CHIZIQ: COPYRIGHT BLOKI --- */}
+      {/* --- PASTKI QISM --- */}
       <div className="footer-bottom-bar">
         <div className="bottom-bar-container">
           <p className="copyright-text">barcha huquqlar himoyalangan gulbozor.uz</p>

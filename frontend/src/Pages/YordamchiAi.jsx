@@ -6,6 +6,9 @@ import logoImg   from "../assets/yordamchi.png";
 import bannerImg from "../assets/banner.png";
 import sendIcon  from "../assets/send.png";
 
+// Backend manzili (.env faylda: VITE_API_URL=http://localhost:3001)
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
 const WELCOME_MESSAGE = {
   id: 0,
   role: "bot",
@@ -17,30 +20,59 @@ export default function YordamchiAi() {
   const [input, setInput]       = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef(null);
+  const chatRef = useRef(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = chatRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [messages, isTyping]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const text = input.trim();
-    if (!text) return;
+    if (!text || isTyping) return;
 
-    setMessages((prev) => [...prev, { id: Date.now(), role: "user", text }]);
+    const userMsg = { id: Date.now(), role: "user", text };
+    const updated = [...messages, userMsg];
+
+    setMessages(updated);
     setInput("");
     setIsTyping(true);
 
-    setTimeout(() => {
+    // Suhbat tarixini API formatiga o'tkazish (salomlashuv xabarini tashlab, oxirgi 20 ta)
+    const history = updated
+      .filter((m) => m.id !== 0)
+      .slice(-20)
+      .map((m) => ({
+        role: m.role === "user" ? "user" : "assistant",
+        content: m.text,
+      }));
+
+    try {
+      const res = await fetch(`${API_URL}/api/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: history }),
+      });
+
+      if (!res.ok) throw new Error("Server xatosi");
+      const data = await res.json();
+
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now() + 1, role: "bot", text: data.reply },
+      ]);
+    } catch (err) {
       setMessages((prev) => [
         ...prev,
         {
           id: Date.now() + 1,
           role: "bot",
-          text: "Savolingiz uchun rahmat! Tez orada javob beramiz. 🍃",
+          text: "Kechirasiz, hozir javob bera olmadim. Iltimos, birozdan so'ng qayta urinib ko'ring. 🍃",
         },
       ]);
+    } finally {
       setIsTyping(false);
-    }, 1400);
+    }
   };
 
   const handleKey = (e) => {
@@ -53,7 +85,7 @@ export default function YordamchiAi() {
   return (
     <div className="yai-root">
 
-      {/* ═══ MOBILE header — faqat telefonlarda ko'rinadi ═══ */}
+      {/* MOBILE header */}
       <motion.div
         className="yai-mobile-header"
         initial={{ opacity: 0, y: -18 }}
@@ -66,7 +98,7 @@ export default function YordamchiAi() {
         <span className="yai-mobile-name">Yordamchi Ai</span>
       </motion.div>
 
-      {/* ═══ DESKTOP header — faqat PC/planshetlarda ko'rinadi ═══ */}
+      {/* DESKTOP header */}
       <motion.div
         className="yai-desktop-header"
         initial={{ opacity: 0, y: -24 }}
@@ -89,8 +121,8 @@ export default function YordamchiAi() {
         </div>
       </motion.div>
 
-      {/* ═══ CHAT AREA — ikkala holatda ham bir xil ═══ */}
-      <div className="yai-chat-area">
+      {/* CHAT AREA */}
+      <div className="yai-chat-area" ref={chatRef}>
         <AnimatePresence initial={false}>
           {messages.map((msg) => (
             <motion.div
@@ -126,7 +158,7 @@ export default function YordamchiAi() {
         <div ref={bottomRef} />
       </div>
 
-      {/* ═══ INPUT BAR — ikkala holatda ham bir xil ═══ */}
+      {/* INPUT BAR */}
       <div className="yai-input-bar">
         <input
           className="yai-input"
@@ -134,10 +166,12 @@ export default function YordamchiAi() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKey}
+          disabled={isTyping}
         />
         <motion.button
           className="yai-send-btn"
           onClick={handleSend}
+          disabled={isTyping}
           whileTap={{ scale: 0.85 }}
           whileHover={{ scale: 1.08 }}
         >
