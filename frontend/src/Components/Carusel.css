@@ -1,0 +1,132 @@
+/* ===== Gulbozor karuseli — oq-yashil, silliq (telefonda ham ixcham) ===== */
+.crs-wrap { max-width: 1300px; margin: 20px auto 0; padding: 0 15px; }
+
+.crs {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid #dcebe0;
+  box-shadow: 0 10px 30px rgba(30, 120, 60, 0.1);
+  outline-offset: 3px;
+}
+.crs:focus-visible { outline: 3px solid #2e9d57; }
+
+.crs-track { display: flex; transition: transform 0.75s cubic-bezier(0.65, 0, 0.35, 1); }
+
+.crs-slide {
+  min-width: 100%;
+  min-height: 340px;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 0 100px;
+}
+
+/* ----- Matn ----- */
+.crs-txt { min-width: 0; }
+.crs-txt small { display: block; margin-bottom: 10px; color: #1b7a40; font-weight: 700; font-size: 14px; }
+.crs-txt h2 { margin: 0 0 12px; font-size: clamp(26px, 3.6vw, 44px); line-height: 1.1; font-weight: 800; color: #12301d; max-width: 16ch; }
+.crs-txt p { margin: 0 0 24px; color: #4b6a57; font-size: 17px; line-height: 1.5; max-width: 38ch; }
+
+.crs-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 30px; border: 0; border-radius: 12px;
+  background: #14532d; color: #fff; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer;
+  transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.crs-btn span { display: inline-block; transition: transform 0.25s; }
+.crs-btn:hover { background: #2e9d57; transform: translateY(-2px); box-shadow: 0 10px 22px rgba(46, 157, 87, 0.35); }
+.crs-btn:hover span { transform: translateX(5px); }
+.crs-btn:focus-visible { outline: 3px solid #2e9d57; outline-offset: 3px; }
+
+/* ----- Rasm ----- */
+.crs-pic { display: flex; justify-content: center; align-items: center; height: 100%; padding: 20px 0; min-width: 0; }
+.crs-pic img { max-width: 100%; max-height: 300px; object-fit: contain; filter: drop-shadow(0 18px 22px rgba(20, 83, 45, 0.22)); }
+.crs-emoji { font-size: 170px; line-height: 1; filter: drop-shadow(0 18px 22px rgba(20, 83, 45, 0.22)); }
+
+/* ----- Faol slayd animatsiyasi (faqat koʻrinayotgan slaydda) ----- */
+.crs-slide.active .crs-txt > * { animation: crsUp 0.7s both; }
+.crs-slide.active .crs-txt > :nth-child(1) { animation-delay: 0.25s; }
+.crs-slide.active .crs-txt > :nth-child(2) { animation-delay: 0.35s; }
+.crs-slide.active .crs-txt > :nth-child(3) { animation-delay: 0.45s; }
+.crs-slide.active .crs-txt > :nth-child(4) { animation-delay: 0.55s; }
+.crs-slide.active .crs-pic > * { animation: crsPop 0.9s 0.3s both, crsFloat 5s 1.2s ease-in-out infinite; }
+
+/* ----- Strelkalar ----- */
+.crs-arr {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; border: 0; border-radius: 50%;
+  background: #fff; color: #12301d; font-size: 28px; line-height: 1; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  transition: background 0.25s, color 0.25s, transform 0.25s;
+}
+.crs-arr:hover { background: #2e9d57; color: #fff; transform: translateY(-50%) scale(1.08); }
+.crs-arr:focus-visible { outline: 3px solid #2e9d57; outline-offset: 2px; }
+.crs-arr.l { left: 22px; }
+.crs-arr.r { right: 22px; }
+
+/* ----- Nuqtalar ----- */
+.crs-dots { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+.crs-dots button { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 99px; background: #b3d6bf; cursor: pointer; transition: width 0.35s, background 0.35s; }
+.crs-dots button:hover { background: #7fc096; }
+.crs-dots button.on { width: 28px; background: #2e9d57; }
+
+@keyframes crsUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@keyframes crsPop { from { opacity: 0; transform: scale(0.86) translateX(30px); } to { opacity: 1; transform: none; } }
+@keyframes crsFloat { 50% { transform: translateY(-9px); } }
+
+/* Mahsulotlar boʻlimiga oʻtganda tepadan joy qolsin */
+#mahsulotlar { scroll-margin-top: 16px; }
+
+/* ===== Planshet ===== */
+@media (max-width: 900px) {
+  .crs-slide { padding: 0 70px; min-height: 300px; gap: 16px; }
+  .crs-pic img { max-height: 250px; }
+  .crs-emoji { font-size: 130px; }
+}
+
+/* ===== Telefon: kompyuterdagidek — matn chapda, rasm oʻngda, lekin ixcham ===== */
+@media (max-width: 700px) {
+  .crs-wrap { margin-top: 12px; padding: 0 10px; }
+  .crs { border-radius: 18px; }
+
+  .crs-slide {
+    grid-template-columns: 1.1fr 1fr;   /* yonma-yon, ustma-ust emas */
+    gap: 6px;
+    min-height: 185px;
+    padding: 12px 12px 30px 16px;       /* pastda nuqtalar uchun joy */
+    text-align: left;
+  }
+
+  .crs-txt small { margin-bottom: 4px; font-size: 11px; }
+  .crs-txt h2 { margin: 0 0 6px; max-width: none; font-size: 18px; line-height: 1.15; }
+  .crs-txt p {
+    margin: 0 0 10px; max-width: none; font-size: 11.5px; line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .crs-btn { padding: 8px 16px; gap: 6px; font-size: 12.5px; border-radius: 10px; }
+
+  .crs-pic { order: 0; height: auto; padding: 0; }
+  .crs-pic img { max-height: 135px; }
+  .crs-emoji { font-size: 76px; }
+
+  .crs-arr { display: none; }             /* telefonda barmoq bilan suriladi */
+  .crs-dots { bottom: 9px; gap: 6px; }
+  .crs-dots button { width: 7px; height: 7px; }
+  .crs-dots button.on { width: 20px; }
+}
+
+/* ===== Juda tor telefonlar ===== */
+@media (max-width: 380px) {
+  .crs-slide { min-height: 170px; padding: 10px 10px 28px 12px; }
+  .crs-txt h2 { font-size: 16px; }
+  .crs-txt p { font-size: 11px; }
+  .crs-btn { padding: 7px 13px; font-size: 12px; }
+  .crs-pic img { max-height: 118px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crs-track { transition: none; }
+  .crs-slide.active .crs-txt > *, .crs-slide.active .crs-pic > * { animation: none; }
+}

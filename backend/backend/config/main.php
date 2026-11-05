@@ -48,8 +48,10 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'GET izohlar'  => 'izohlar/index',
+                'POST izohlar' => 'izohlar/create',
                 ['class' => 'yii\rest\UrlRule','controller' => ['navbar', 'kategoriya', 'gullar'],]
-                    
+                     
             ],
         ],
      

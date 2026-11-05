@@ -1,874 +1,266 @@
-
+/* ===== Gulbozor — oq-yashil, silliq uslub ===== */
 .catalog-section {
-  padding: 50px 0;
-  background-color: #f9f9f9;
+  --g: #2e9d57;
+  --g2: #1b7a40;
+  --gl: #e8f6ed;
+  --ln: #dcebe0;
+  --tx: #17301f;
+  --mu: #5f7a68;
+  --am: #f5b301;
+  padding: 30px 0 50px;
+  background: linear-gradient(180deg, #f4fbf6, #ffffff);
+  color: var(--tx);
 }
+.custom-container { max-width: 1300px; margin: 0 auto; padding: 0 15px; }
 
-.custom-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
-
-.catalog-title {
-  text-align: center;
-  font-size: 2.2rem;
-  color: #333;
-  margin-bottom: 40px;
-  font-weight: 700;
-}
-
+/* ----- Mahsulotlar setkasi ----- */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  transition: opacity 0.35s ease;
 }
+.product-grid.refreshing { opacity: 0.45; }
+@media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
 
-
+/* ----- Karta ----- */
 .flower-card {
   background: #fff;
+  border: 1px solid var(--ln);
   border-radius: 20px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  border: 1px solid #eee;
+  padding: 10px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  padding: 10px; 
-}
-
-.flower-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
-}
-
-
-.flower-image-wrapper {
-  width: 100%;
-  aspect-ratio: 4 / 5; 
-  overflow: hidden;
-  border-radius: 15px;
-  background: #fdfdfd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.flower-img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.flower-card:hover .flower-img {
-  transform: scale(1.05);
-}
-
-/* Ma'lumotlar */
-.flower-details {
-  padding: 15px 10px 5px 10px;
-  text-align: center;
-}
-
-.flower-name {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #2d3436;
-  margin-bottom: 10px;
-}
-
-.flower-price {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: #28a745;
-  margin-bottom: 15px;
-}
-
-/* Batafsil tugmasi */
-.details-btn {
-  background: #28a745;
-  color: #fff;
-  border: none;
-  padding: 12px 0;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-  width: 100%;
-  font-size: 0.95rem;
-}
-
-.details-btn:hover {
-  background: #218838;
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
-}
-
-.loader {
-  text-align: center;
-  padding: 100px;
-  color: #28a745;
-}
-
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-/* Telefonlar uchun maxsus (768px dan kichik ekranlar) */
-@media (max-width: 768px) {
-  .catalog-section {
-    padding: 20px 0;
-  }
-
-  .catalog-title {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-  }
-
-  .product-grid {
-    /* Telefonda 1 qatorda 2 ta karta chiqishi uchun */
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px; /* Oradagi masofani kamaytiramiz */
-  }
-
-  .flower-card {
-    padding: 6px; /* Card ichidagi bo'shliqni telefonda kichraytiramiz */
-    border-radius: 12px;
-  }
-
-  .flower-image-wrapper {
-    height: auto;
-    aspect-ratio: 4 / 5; /* 1200x1500 nisbatni telefonda ham saqlaydi */
-  }
-
-  .flower-details {
-    padding: 10px 5px;
-  }
-
-  .flower-name {
-    font-size: 0.95rem; /* Matnni kichraytiramiz */
-    margin-bottom: 5px;
-  }
-
-  .flower-price {
-    font-size: 1rem;
-    margin-bottom: 10px;
-  }
-
-  .details-btn {
-    padding: 8px 0;
-    font-size: 0.85rem;
-    border-radius: 8px;
-  }
-}
-
-
-@media (max-width: 400px) {
-  .product-grid {
-    gap: 8px;
-  }
-
-  .flower-name {
-    font-size: 0.85rem;
-  }
-}
-/* Katalog sarlavhasi */
-.catalog-title {
-  font-size: 28px;
-  margin-bottom: 30px;
-  color: #333;
-  font-weight: 700;
-}
-
-/* Mahsulotlar seti */
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 25px;
-  width: 100%;
-}
-
-
-.empty-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  min-height: 300px;
-  width: 100%;
-  background: #fcfcfc;
-  border-radius: 20px;
-  border: 2px dashed #eee; /* Chiroyli ramka */
-}
-
-.empty-content {
-  text-align: center;
-}
-
-.empty-text {
-  font-size: 22px;
-  color: #555;
-  margin-bottom: 10px;
-}
-
-.empty-subtext {
-  color: #999;
-  font-size: 14px;
-}
-.catalog-section {
-  padding: 20px 0;
-  background-color: #fff;
-}
-
-/* Silliq o'tish effekti */
-.product-wrapper {
-  transition: opacity 0.3s ease;
-  min-height: 400px;
-}
-
-.product-wrapper.refreshing {
-  opacity: 0.5;
-}
-
-/* Grid sistemasi */
-.product-grid {
-  display: grid;
-  gap: 15px; /* Cardlar orasidagi masofa */
-  grid-template-columns: repeat(4, 1fr); /* Kompyuterda 4 ta */
-}
-
-/* Planshet uchun (Tablet) */
-@media (max-width: 1024px) {
-  .product-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 ta card */
-  }
-}
-
-/* Mobil telefonlar uchun */
-@media (max-width: 768px) {
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr); /* 1 qatorda 2 ta card */
-    gap: 10px;
-    padding: 0 5px;
-  }
-
-  .flower-name {
-    font-size: 14px; 
-  }
-
-  .flower-price {
-    font-size: 13px;
-  }
-
-  .details-btn {
-    padding: 8px;
-    font-size: 12px;
-  }
-}
-
-/* Card dizayni */
-.flower-card {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #f0f0f0;
-}
-
-.flower-image-wrapper {
-  aspect-ratio: 1 / 1; 
-  overflow: hidden;
-}
-
-.flower-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s;
-}
-
-.flower-card:hover .flower-img {
-  transform: scale(1.05);
-}
-
-.flower-details {
-  padding: 12px;
-  text-align: center;
-}
-
-.empty-container {
-  text-align: center;
-  padding: 50px 0;
-  color: #888;
-}
-
-.empty-img {
-  position: absolute;
-  top: 70px;
-  width: 120px;
-  margin-bottom: 15px;
-  opacity: 0.5;
-}
-.catalog-title {
-  
-  color: #28a745;
-  text-shadow: 0 0 0px gray;
-}
-/* Bo'sh holat uchun asosiy konteyner */
-.empty-state-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 20px;
-  width: 100%;
-}
-
-.empty-state-card {
-  display: flex;
-  flex-direction: column; /* Elementlarni ustma-ust qo'yish */
-  align-items: center;
-  max-width: 450px;
-  text-align: center;
-  background: #ffffff;
-  padding: 40px;
-  border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Mayin soya */
-}
-
-.empty-icon-box {
-  width: 180px;
-  margin-bottom: 25px;
-}
-
-.empty-state-img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  opacity: 0.7;
-}
-
-.empty-state-title {
-  font-size: 24px;
-  color: #2d3436;
-  margin-bottom: 12px;
-  font-weight: 700;
-}
-
-.empty-state-text {
-  font-size: 15px;
-  color: #636e72;
-  line-height: 1.6;
-  margin-bottom: 25px;
-}
-
-/* Tozalash tugmasi */
-.reset-search-btn {
-  background-color: #27ae60;
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 50px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.reset-search-btn:hover {
-  background-color: #219150;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
-}
-
-/* Mobil moslashuv */
-@media (max-width: 480px) {
-  .empty-state-card {
-    padding: 30px 20px;
-    box-shadow: none;
-    background: transparent;
-  }
-
-  .empty-icon-box {
-    width: 140px;
-  }
-}
-/* Katalog umumiy */
-.catalog-section {
-  padding: 30px 0;
-  background: #f9f9f9;
-}
-.custom-container {
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
-
-/* Product Grid */
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.flower-card {
-  background: #fff;
-  border-radius: 18px;
-  padding: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  cursor: pointer;
-  transition: 0.3s ease;
-  border: 1px solid #eee;
+  box-shadow: 0 4px 14px rgba(30, 120, 60, 0.06);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, border-color 0.3s;
+  animation: cardIn 0.55s both;
 }
 .flower-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  border-color: #b9dfc6;
+  box-shadow: 0 18px 34px rgba(30, 120, 60, 0.16);
 }
-
 .flower-img-box {
+  position: relative;
   width: 100%;
-  aspect-ratio: 4/5; /* 1200x1500 formatga mos */
+  aspect-ratio: 4 / 5;
   border-radius: 14px;
   overflow: hidden;
-  background: #f0f0f0;
+  background: linear-gradient(145deg, #e8f6ed, #d3eddc);
 }
 .flower-img-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
+.flower-img-box img.loaded { opacity: 1; }
+.flower-card:hover .flower-img-box img { transform: scale(1.07); }
 
-.flower-info {
-  padding: 12px 5px;
-  text-align: center;
+.stock-badge {
+  position: absolute; top: 10px; left: 10px;
+  background: #e8a200; color: #fff;
+  font-size: 12px; font-weight: 700;
+  padding: 4px 11px; border-radius: 99px;
 }
-.flower-name {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: #333;
-}
-.flower-price {
-  color: #27ae60;
-  font-size: 17px;
-  margin-bottom: 12px;
-  
-}
+.stock-badge.out { background: #d9382c; }
+
+.flower-info { padding: 12px 4px 4px; text-align: center; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.flower-name { margin: 0; font-size: 16px; font-weight: 700; color: var(--tx); }
+.card-rating { display: flex; justify-content: center; align-items: center; gap: 7px; font-size: 13px; color: var(--mu); }
+.flower-price { margin: 0; font-size: 18px; font-weight: 800; color: var(--g); }
+.flower-stock { margin: 0; font-size: 13px; color: var(--mu); }
+.flower-stock b { color: var(--g2); }
+.flower-stock.low b { color: #d9382c; }
 .view-btn {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  background: black;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  color: #eee;
+  margin-top: auto; width: 100%; padding: 11px; border: 0; border-radius: 12px;
+  background: var(--g); color: #fff; font-weight: 700; cursor: pointer;
+  transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
 }
+.view-btn:hover { background: var(--g2); box-shadow: 0 6px 16px rgba(46, 157, 87, 0.35); }
+.flower-card:active .view-btn { transform: scale(0.98); }
 
-/* MODAL OVERLAY */
+/* ----- Yulduzchalar ----- */
+.stars { position: relative; display: inline-block; line-height: 1; letter-spacing: 2px; white-space: nowrap; }
+.stars-bg { color: #d3e4d8; }
+.stars-fg { position: absolute; left: 0; top: 0; overflow: hidden; white-space: nowrap; color: var(--am); transition: width 0.5s ease; }
+
+/* ----- Boʻsh holat ----- */
+.empty-state-container { display: flex; justify-content: center; align-items: center; min-height: 380px; width: 100%; text-align: center; }
+.empty-state-content { max-width: 420px; padding: 20px; animation: cardIn 0.5s both; }
+.empty-image-wrapper { margin: 0 auto 18px; }
+.empty-img { width: 160px; max-width: 60%; height: auto; opacity: 0.7; }
+.empty-title { margin: 0 0 8px; font-size: 22px; font-weight: 700; color: var(--tx); }
+.empty-text { margin: 0; font-size: 15px; line-height: 1.6; color: var(--mu); }
+
+/* ===== KATTA MODAL ===== */
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  padding: 15px;
-}
-
-/* MODAL CARD */
-.modal-card {
-  background: #fff;
-  width: 100%;
-  max-width: 950px;
-  border-radius: 30px;
-  position: relative;
-  overflow: hidden;
-  animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Yopish tugmasi */
-.close-x-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: #fff;
-  border: none;
-  cursor: pointer;
-  z-index: 10;
-  border-radius: 50%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 5px;
-}
-.close-x-btn img {
-  width: 30px;
-  height: 30px;
-  display: block;
-}
-
-/* Flex qismlari */
-.modal-content-flex {
-  display: flex;
-  flex-direction: row;
-}
-
-.modal-image-side {
-  flex: 1;
-  background: #f8f8f8;
-  max-height: 600px;
-}
-.modal-image-side img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.modal-details-side {
-  flex: 1.2;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-category-tag {
-  color: #27ae60;
-  font-weight: 700;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-.modal-product-title {
-  font-size: 30px;
-  font-weight: 800;
-  color: #222;
-  margin-bottom: 15px;
-}
-
-.modal-description-box {
-  background: #f7f9fb;
-  padding: 15px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-  flex-grow: 1;
-  overflow-y: auto;
-  max-height: 200px;
-}
-.modal-description-box p {
-  font-size: 15px;
-  color: #555;
-  line-height: 1.6;
-}
-
-.modal-info-grid {
-  display: flex;
-  gap: 40px;
-  margin-bottom: 30px;
-  border-top: 1px solid #eee;
-  padding-top: 20px;
-}
-.info-item .label {
-  display: block;
-  font-size: 13px;
-  color: #999;
-  margin-bottom: 5px;
-}
-.info-item .value {
-  font-size: 22px;
-  font-weight: 800;
-  color: #333;
-}
-
-/* Footer & Counter */
-.modal-footer-controls {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-
-.counter-wrapper {
-  display: flex;
-  align-items: center;
-  background: #f0f2f5;
-  border-radius: 14px;
-  padding: 6px;
-}
-.counter-wrapper button {
-  width: 42px;
-  height: 42px;
-  border: none;
-  background: #fff;
-  border-radius: 10px;
-  font-size: 20px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.counter-wrapper button:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-.count-display {
-  padding: 0 18px;
-  font-weight: 800;
-  font-size: 18px;
-  color: #222;
-}
-
-.add-to-cart-btn {
-  flex: 1;
-  background: #27ae60;
-  color: #fff;
-  border: none;
-  padding: 16px;
-  border-radius: 14px;
-  font-weight: 700;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-/* TELEFONDA MOSLASHUV (Mobile Responsive) */
-@media (max-width: 768px) {
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .modal-content-flex {
-    flex-direction: column;
-  }
-  .modal-image-side {
-    height: 280px;
-    width: 100%;
-  }
-  .modal-details-side {
-    padding: 20px;
-  }
-
-  .modal-card {
-    width: 95%;
-    height: auto;
-    max-height: 92vh;
-    overflow-y: auto;
-    border-radius: 20px;
-  }
-
-  .modal-product-title {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  .modal-info-grid {
-    gap: 20px;
-    padding-top: 15px;
-    margin-bottom: 20px;
-  }
-  .info-item .value {
-    font-size: 18px;
-  }
-
-  .modal-footer-controls {
-    flex-direction: column;
-    width: 100%;
-  }
-  .counter-wrapper {
-    width: 100%;
-    justify-content: space-between;
-  }
-  .add-to-cart-btn {
-    width: 100%;
-    padding: 14px;
-  }
-
-  .close-x-btn {
-    top: 10px;
-    right: 10px;
-  }
-  .close-x-btn img {
-    width: 24px;
-    height: 24px;
-  }
-}
-
-@media (max-width: 480px) {
-  .product-grid {
-    gap: 8px;
-  }
-  .flower-card {
-    padding: 8px;
-  }
-  .flower-name {
-    font-size: 14px;
-  }
-  .flower-price {
-    font-size: 14px;
-  }
-}
-/* Empty State (Topilmaganda) Stillari */
-.empty-state-container {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px;
-  width: 100%;
-  text-align: center;
-}
-
-.empty-state-content {
-  max-width: 400px;
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; justify-content: center; align-items: center;
   padding: 20px;
+  background: rgba(9, 45, 22, 0.55);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease;
 }
-
-.empty-image-wrapper {
-  width: 150px;
-  margin: 0 auto 20px;
-}
-
-.empty-img {
-  width: 200px;
-  position: absolute;
-  top: 40px;
-  right: 560px;
-  height: auto;
-  opacity: 0.6; /* Bir oz xira rangda chiroyli turadi */
-  filter: grayscale(0.5);
-}
-
-.empty-title {
-  font-size: 22px;
-  color: #333;
-  position: absolute;
-  top: 220px;
-  right: 550px;
-  font-weight: 700;
-}
-
-.empty-text {
-  font-size: 15px;
-  color: #888;
-  position: absolute;
-  top: 250px;
-  right: 500px;
-  line-height: 1.5;
-}
-
-/* Mobil uchun moslashuv */
-@media (max-width: 768px) {
-  .empty-state-container {
-    min-height: 300px;
-  }
-  .empty-img {
-    width: 100px;
-  }
-  .empty-title {
-    font-size: 18px;
-  }
-}
-/* Omborda qolmagan bo'lsa qiymatni qizil qilish */
-.value.out-of-stock {
-  color: #e74c3c !important;
-  font-weight: bold;
-}
-
-/* Savatga qo'shish tugmasi o'chgan holati */
-.add-to-cart-btn:disabled {
-  background-color: #bdc3c7 !important;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-/* Counter tugmalari o'chgan holati */
-.counter-wrapper button:disabled {
-  color: #ccc;
-  cursor: not-allowed;
-}
-
-/* Modal Card Ixchamligi */
-.ixcham-modal {
-  width: 95%;
-  max-width: 500px; /* Telefonda juda katta bo'lmasligi uchun */
-  max-height: 90vh;
-  border-radius: 20px;
-  overflow: hidden;
+.modal-card {
   position: relative;
-  padding: 0;
+  width: 100%; max-width: 1100px;
+  height: min(86vh, 700px);
+  background: #fff;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+  animation: modalIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-
-.modal-content-scrollable {
-  overflow-y: auto;
-  max-height: 90vh;
-}
-
 .close-x-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 50%;
-  padding: 5px;
-  border: none;
-  cursor: pointer;
+  position: absolute; top: 16px; right: 16px; z-index: 10;
+  width: 40px; height: 40px; padding: 5px;
+  border: 0; border-radius: 50%; cursor: pointer;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.25s;
 }
+.close-x-btn:hover { transform: rotate(90deg) scale(1.08); }
+.close-x-btn img { width: 100%; height: 100%; display: block; }
 
-/* Jami Narx Stili */
-.total-price-box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  padding: 10px;
-  background: #f9f9f9;
-  border-radius: 10px;
+.modal-content-flex { display: flex; height: 100%; }
+.modal-image-side { flex: 0 0 42%; background: linear-gradient(145deg, #e8f6ed, #d3eddc); }
+.modal-image-side img { width: 100%; height: 100%; object-fit: cover; display: block; animation: fadeIn 0.6s ease; }
+
+.modal-details-side { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 30px 30px 0; }
+.modal-category-tag {
+  align-self: flex-start; background: var(--gl); color: var(--g2);
+  font-weight: 700; font-size: 13px; padding: 4px 12px; border-radius: 99px; margin-bottom: 10px;
 }
-
-.total-label {
-  font-size: 14px;
-  color: #666;
+.modal-product-title { margin: 0 0 8px; font-size: 30px; font-weight: 800; line-height: 1.15; padding-right: 40px; }
+.modal-rating {
+  align-self: flex-start; display: flex; align-items: center; gap: 8px;
+  background: none; border: 0; padding: 0; cursor: pointer; color: var(--mu); font-size: 14px;
 }
+.modal-rating b { color: var(--tx); }
+.modal-rating:hover span:last-child { text-decoration: underline; }
 
-.total-value {
-  font-size: 18px;
-  font-weight: bold;
-  color: #27ae60; /* Yashil rang narx uchun */
+/* Tablar */
+.modal-tabs { display: flex; gap: 6px; margin: 16px 0 14px; padding: 4px; background: var(--gl); border-radius: 14px; align-self: flex-start; }
+.modal-tabs button {
+  border: 0; background: none; padding: 9px 18px; border-radius: 11px;
+  font-weight: 700; font-size: 14px; color: var(--mu); cursor: pointer; transition: all 0.25s;
 }
+.modal-tabs button.on { background: #fff; color: var(--g2); box-shadow: 0 2px 8px rgba(30, 120, 60, 0.15); }
 
-/* Footer Control - Mobil uchun */
-.modal-footer-controls {
-  display: flex;
-  flex-direction: column; /* Telefonda ustma-ust tushishi uchun */
-  gap: 10px;
+.modal-tab-body {
+  flex: 1; min-height: 0; overflow-y: auto; padding-right: 8px;
+  animation: tabIn 0.35s ease;
+  scrollbar-width: thin; scrollbar-color: #b9dfc6 transparent;
 }
+.modal-description-box { background: #f5fbf7; border: 1px solid var(--ln); border-radius: 16px; padding: 16px 18px; margin-bottom: 18px; }
+.modal-description-box p { margin: 0; font-size: 15px; line-height: 1.7; color: #3f5a49; white-space: pre-line; }
+.modal-info-grid { display: flex; gap: 40px; padding-top: 14px; border-top: 1px solid var(--ln); }
+.info-item .label { display: block; font-size: 13px; color: var(--mu); margin-bottom: 4px; }
+.info-item .value { font-size: 22px; font-weight: 800; color: var(--tx); }
+.value.out-of-stock { color: #d9382c; }
 
-@media (min-width: 480px) {
-  .modal-footer-controls {
-      flex-direction: row; /* Kattaroq ekranda yonma-yon */
-  }
+/* Baho xulosasi */
+.rating-summary { display: flex; gap: 24px; align-items: center; padding: 14px 16px; background: #f5fbf7; border: 1px solid var(--ln); border-radius: 16px; margin-bottom: 16px; }
+.rs-big { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 90px; }
+.rs-big strong { font-size: 38px; line-height: 1; color: var(--g2); }
+.rs-big small { color: var(--mu); font-size: 12px; }
+.rs-bars { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.rs-row { display: grid; grid-template-columns: 26px 1fr 22px; gap: 8px; align-items: center; font-size: 12px; color: var(--mu); }
+.rs-row i { height: 8px; background: #dcebe0; border-radius: 99px; overflow: hidden; display: block; }
+.rs-row b { display: block; height: 100%; background: var(--am); border-radius: 99px; transition: width 0.6s ease; }
+
+/* Izoh formasi */
+.izoh-form { display: flex; flex-direction: column; gap: 10px; padding: 16px; border: 1px solid var(--ln); border-radius: 16px; margin-bottom: 18px; }
+.izoh-form h4 { margin: 0; font-size: 16px; }
+.star-input { display: flex; gap: 4px; }
+.star-input button { border: 0; background: none; padding: 0 2px; font-size: 30px; line-height: 1; color: #d3e4d8; cursor: pointer; transition: color 0.15s, transform 0.2s; }
+.star-input button.on { color: var(--am); transform: scale(1.12); }
+.izoh-form input, .izoh-form textarea {
+  width: 100%; padding: 11px 14px; border: 2px solid var(--ln); border-radius: 12px;
+  font: inherit; color: var(--tx); background: #fff; resize: vertical; transition: border-color 0.25s, box-shadow 0.25s;
 }
+.izoh-form input:focus, .izoh-form textarea:focus { outline: none; border-color: var(--g); box-shadow: 0 0 0 4px rgba(46, 157, 87, 0.12); }
+.send-btn { align-self: flex-start; padding: 11px 26px; border: 0; border-radius: 12px; background: var(--g); color: #fff; font-weight: 700; cursor: pointer; transition: background 0.25s, transform 0.25s; }
+.send-btn:hover:not(:disabled) { background: var(--g2); transform: translateY(-1px); }
+.send-btn:disabled { opacity: 0.6; cursor: wait; }
 
+/* Izohlar roʻyxati */
+.izoh-list { display: flex; flex-direction: column; padding-bottom: 12px; }
+.izoh-empty { text-align: center; color: var(--mu); padding: 20px 0; margin: 0; }
+.izoh-item { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--ln); animation: tabIn 0.4s ease; }
+.avatar { flex: 0 0 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #6fd199, var(--g)); color: #fff; font-weight: 800; display: grid; place-items: center; }
+.izoh-body { min-width: 0; }
+.izoh-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.izoh-body p { margin: 4px 0; font-size: 14.5px; line-height: 1.55; color: #3f5a49; overflow-wrap: anywhere; }
+.izoh-body small { color: var(--mu); font-size: 12px; }
+
+/* Modal pastki paneli */
+.modal-footer { padding: 14px 0 22px; border-top: 1px solid var(--ln); background: #fff; }
+.total-price-box { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 10px 14px; background: var(--gl); border-radius: 12px; }
+.total-label { font-size: 14px; color: var(--mu); }
+.total-value { font-size: 19px; font-weight: 800; color: var(--g2); }
+.modal-footer-controls { display: flex; gap: 12px; align-items: center; }
+.counter-wrapper { display: flex; align-items: center; background: var(--gl); border-radius: 14px; padding: 5px; }
+.counter-wrapper button { width: 40px; height: 40px; border: 0; border-radius: 10px; background: #fff; font-size: 20px; cursor: pointer; transition: background 0.2s, transform 0.15s; }
+.counter-wrapper button:hover:not(:disabled) { background: #d3eddc; }
+.counter-wrapper button:active:not(:disabled) { transform: scale(0.92); }
+.counter-wrapper button:disabled { opacity: 0.35; cursor: not-allowed; }
+.count-display { min-width: 46px; text-align: center; font-weight: 800; font-size: 18px; }
 .add-to-cart-btn {
-  flex: 1;
-  background: #27ae60;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 10px;
-  font-weight: bold;
+  flex: 1; padding: 14px; border: 0; border-radius: 14px;
+  background: linear-gradient(135deg, #3cb468, var(--g2)); color: #fff;
+  font-weight: 700; font-size: 16px; cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s;
 }
+.add-to-cart-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(46, 157, 87, 0.38); }
+.add-to-cart-btn:disabled { background: #bdc9c1; cursor: not-allowed; }
 
+/* Xabarnoma (alert oʻrniga) */
+.gb-toast {
+  position: fixed; left: 50%; bottom: 28px; z-index: 10000;
+  transform: translate(-50%, 30px); opacity: 0; pointer-events: none;
+  background: #10321e; color: #fff; padding: 12px 22px; border-radius: 99px;
+  max-width: 90vw; text-align: center; font-size: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+.gb-toast.on { transform: translate(-50%, 0); opacity: 1; }
 
+.flower-card:focus-visible, .modal-card button:focus-visible, .view-btn:focus-visible { outline: 3px solid var(--g); outline-offset: 2px; }
+
+/* ----- Animatsiyalar ----- */
+@keyframes cardIn { from { opacity: 0; transform: translateY(22px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalIn { from { opacity: 0; transform: translateY(40px) scale(0.95); } to { opacity: 1; transform: none; } }
+@keyframes tabIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ----- Telefon ----- */
+@media (max-width: 768px) {
+  .catalog-section { padding: 18px 0 36px; }
+  .flower-card { padding: 7px; border-radius: 14px; }
+  .flower-name { font-size: 14px; }
+  .flower-price { font-size: 15px; }
+  .view-btn { padding: 9px; font-size: 13px; }
+  .card-rating { font-size: 12px; }
+
+  .modal-overlay { padding: 10px; }
+  .modal-card { height: auto; max-height: 94vh; overflow-y: auto; border-radius: 22px; }
+  .modal-content-flex { flex-direction: column; height: auto; }
+  .modal-image-side { flex: none; height: 240px; }
+  .modal-details-side { padding: 18px 18px 0; }
+  .modal-product-title { font-size: 22px; }
+  .modal-tab-body { overflow: visible; padding-right: 0; }
+  .modal-footer { position: sticky; bottom: 0; padding-bottom: 16px; z-index: 5; }
+  .rating-summary { flex-direction: column; align-items: stretch; gap: 12px; }
+  .rs-big { flex-direction: row; justify-content: center; gap: 10px; }
+  .info-item .value { font-size: 18px; }
+}
+@media (max-width: 480px) { .product-grid { gap: 8px; } .flower-card { padding: 6px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .catalog-section *, .modal-overlay, .modal-card { animation: none !important; transition: none !important; }
+}

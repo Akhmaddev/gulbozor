@@ -1,0 +1,63 @@
+/* ===== Afzalliklar chizigʻi — oq-yashil ===== */
+.afz-wrap { max-width: 1300px; margin: 16px auto 0; padding: 0 15px; }
+
+.afz {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #fff;
+  border: 1px solid #dcebe0;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(30, 120, 60, 0.06);
+  overflow: hidden;
+}
+
+.afz-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  min-width: 0;
+  transition: background 0.3s ease;
+  animation: afzIn 0.6s both;
+}
+.afz-item + .afz-item { border-left: 1px solid #e3efe6; }
+.afz-item:hover { background: #f3fbf6; }
+
+
+.afz-ic img { width: 36px; height: 36px; object-fit: contain; }
+.afz-ic span { font-size: 26px; line-height: 1; }
+
+.afz-tx { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.afz-tx b { font-size: 15px; font-weight: 700; color: #12301d; line-height: 1.25; }
+.afz-tx small { font-size: 13px; color: #5f7a68; line-height: 1.35; }
+
+@keyframes afzIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ----- Planshet: 2 × 2 alohida kartalar ----- */
+@media (max-width: 900px) {
+  .afz { grid-template-columns: repeat(2, 1fr); gap: 10px; background: transparent; border: 0; box-shadow: none; overflow: visible; }
+  .afz-item,
+  .afz-item + .afz-item {
+    background: #fff;
+    border: 1px solid #dcebe0;
+    border-radius: 16px;
+  }
+  .afz-item:hover { background: #f3fbf6; }
+}
+
+/* ----- Telefon: ixcham ----- */
+@media (max-width: 700px) {
+  .afz-wrap { margin-top: 12px; padding: 0 10px; }
+  .afz { gap: 8px; }
+  .afz-item { gap: 10px; padding: 12px 12px; border-radius: 14px; }
+  .afz-ic { flex-basis: 40px; width: 40px; height: 40px; }
+  .afz-ic img { width: 23px; height: 23px; }
+  .afz-ic span { font-size: 20px; }
+  .afz-tx b { font-size: 13px; }
+  .afz-tx small { font-size: 11.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .afz-item { animation: none; }
+  .afz-item, .afz-ic { transition: none; }
+}

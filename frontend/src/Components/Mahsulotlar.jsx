@@ -1,22 +1,101 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./Mahsulotlar.css";
 import emptyIcon from "../assets/empty.png";
 import closeIcon from "../assets/close.png";
 
+const API = "http://gulbozor.loc/backend";
+const IMG = "http://gulbozor.loc/frontend/web/images/";
+
+/* ---------- Yulduzchalar ---------- */
+// Koʻrsatish uchun (0–5, kasr ham boʻladi: 4.3 → 86% toʻladi)
+const Stars = ({ value = 0, size = 16 }) => (
+  <span className="stars" style={{ fontSize: size }} aria-label={`${Number(value).toFixed(1)} / 5`}>
+    <span className="stars-bg">★★★★★</span>
+    <span className="stars-fg" style={{ width: `${(Number(value) / 5) * 100}%` }}>★★★★★</span>
+  </span>
+);
+
+// Baho tanlash uchun
+const StarInput = ({ value, onChange }) => {
+  const [hover, setHover] = useState(0);
+  return (
+    <div className="star-input" onMouseLeave={() => setHover(0)}>
+      {[1, 2, 3, 4, 5].map((s) => (
+        <button
+          type="button"
+          key={s}
+          className={s <= (hover || value) ? "on" : ""}
+          onMouseEnter={() => setHover(s)}
+          onClick={() => onChange(s)}
+          aria-label={`${s} yulduz`}
+        >
+          ★
+        </button>
+      ))}
+    </div>
+  );
+};
+
+/* ---------- Izohlar API (backend boʻlmasa brauzerda saqlanadi) ---------- */
+const localKey = (id) => `izohlar_${id}`;
+const getLocal = (id) => {
+  try { return JSON.parse(localStorage.getItem(localKey(id))) || []; } catch { return []; }
+};
+
+async function fetchIzohlar(id) {
+  try {
+    const r = await axios.get(`${API}/izohlar?gul_id=${id}`);
+    if (Array.isArray(r.data)) return r.data;
+  } catch {}
+  return getLocal(id);
+}
+
+async function sendIzoh(data) {
+  try {
+    const r = await axios.post(`${API}/izohlar`, data);
+    if (r.data && r.data.id) return r.data;
+  } catch {}
+  const item = { ...data, id: Date.now(), sana: new Date().toISOString() };
+  try { localStorage.setItem(localKey(data.gul_id), JSON.stringify([item, ...getLocal(data.gul_id)])); } catch {}
+  return item;
+}
+
+const stat = (list) =>
+  list.length
+    ? { avg: list.reduce((a, r) => a + Number(r.baho), 0) / list.length, n: list.length }
+    : { avg: 0, n: 0 };
+
+const fmtDate = (s) => {
+  const d = new Date(s);
+  return isNaN(d) ? "" : d.toLocaleDateString("uz-UZ", { day: "numeric", month: "long", year: "numeric" });
+};
+
+/* ---------- Asosiy komponent ---------- */
 const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
   const [gullar, setGullar] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedGul, setSelectedGul] = useState(null);
   const [count, setCount] = useState(1);
+  const [tab, setTab] = useState("info");
+  const [izohlar, setIzohlar] = useState([]);
+  const [loadingIz, setLoadingIz] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [form, setForm] = useState({ ism: "", baho: 0, matn: "" });
+  const [toast, setToast] = useState("");
+  const toastTimer = useRef(null);
 
-  // Ma'lumotlarni backend API dan yuklab olish
+  const showToast = (t) => {
+    setToast(t);
+    clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(""), 2600);
+  };
+
+  // Mahsulotlarni yuklash
   useEffect(() => {
     setIsRefreshing(true);
-    let url = `http://gulbozor.loc/backend/gullar?q=${searchTerm || ""}`;
-    if (categoryId && !searchTerm) {
-      url += `&kategoriya_id=${categoryId}`;
-    }
+    let url = `${API}/gullar?q=${searchTerm || ""}`;
+    if (categoryId && !searchTerm) url += `&kategoriya_id=${categoryId}`;
     axios
       .get(url)
       .then((res) => {
@@ -26,20 +105,52 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
       .catch(() => setIsRefreshing(false));
   }, [categoryId, searchTerm]);
 
-  // Modal ichidagi sanagich uchun (+)
-  const increment = (e) => {
-    e.stopPropagation();
-    if (selectedGul && count < Number(selectedGul.soni)) {
-      setCount((prev) => prev + 1);
-    }
+  // Saqlangan ismni olish
+  useEffect(() => {
+    try { setForm((f) => ({ ...f, ism: localStorage.getItem("izoh_ism") || "" })); } catch {}
+  }, []);
+
+  // Modal ochilganda izohlarni yuklash
+  useEffect(() => {
+    if (!selectedGul) return;
+    let ok = true;
+    setLoadingIz(true);
+    fetchIzohlar(selectedGul.id).then((d) => {
+      if (ok) {
+        setIzohlar(d);
+        setLoadingIz(false);
+      }
+    });
+    return () => { ok = false; };
+  }, [selectedGul?.id]);
+
+  // Modal ochiqligida: sahifa qotadi, Esc bilan yopiladi
+  useEffect(() => {
+    if (!selectedGul) return;
+    const onKey = (e) => e.key === "Escape" && setSelectedGul(null);
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [selectedGul]);
+
+  const openGul = (gul) => {
+    setSelectedGul(gul);
+    setCount(1);
+    setTab("info");
+    setIzohlar([]);
+    setForm((f) => ({ ...f, baho: 0, matn: "" }));
   };
 
-  // Modal ichidagi sanagich uchun (-)
+  const increment = (e) => {
+    e.stopPropagation();
+    if (selectedGul && count < Number(selectedGul.soni)) setCount((p) => p + 1);
+  };
   const decrement = (e) => {
     e.stopPropagation();
-    if (count > 1) {
-      setCount((prev) => prev - 1);
-    }
+    if (count > 1) setCount((p) => p - 1);
   };
 
   const getCatName = (id) => {
@@ -47,84 +158,114 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
     return cat ? cat.nomi : "Kategoriya";
   };
 
-  // SAVATGA QO'SHISH FUNKSIYASI (Faqat modal ichidagi tugma bosilganda ishlaydi)
+  // SAVATGA QOʻSHISH
   const handleAddToCart = () => {
     if (!selectedGul || Number(selectedGul.soni) === 0) {
-      alert("Kechirasiz, ushbu mahsulot omborda qolmagan.");
+      showToast("Kechirasiz, ushbu mahsulot omborda qolmagan.");
       return;
     }
-
     const cartItem = {
       id: selectedGul.id,
       nomi: selectedGul.gulnomi,
       narxi: selectedGul.gulnarxi,
       rasmi: selectedGul.gulrasmi,
       miqdori: count,
-      jamiNarxi: count * Number(selectedGul.gulnarxi)
+      jamiNarxi: count * Number(selectedGul.gulnarxi),
     };
 
-    // LocalStorage dan mavjud savatni olish
     let currentCart = JSON.parse(localStorage.getItem("savat")) || [];
-    
-    // Agar mahsulot savatda oldindan bo'lsa, miqdorini yangilash
-    const existingIndex = currentCart.findIndex(item => item.id === cartItem.id);
-    if (existingIndex > -1) {
-      const yangiMiqdor = currentCart[existingIndex].miqdori + count;
-      
-      if (yangiMiqdor > Number(selectedGul.soni)) {
-        alert(`Kechirasiz, omborda jami ${selectedGul.soni} dona mahsulot bor. Savatda allaqachon ${currentCart[existingIndex].miqdori} dona mavjud.`);
+    const idx = currentCart.findIndex((item) => item.id === cartItem.id);
+    if (idx > -1) {
+      const yangi = currentCart[idx].miqdori + count;
+      if (yangi > Number(selectedGul.soni)) {
+        showToast(`Omborda jami ${selectedGul.soni} dona bor. Savatda ${currentCart[idx].miqdori} dona mavjud.`);
         return;
       }
-      
-      currentCart[existingIndex].miqdori = yangiMiqdor;
-      currentCart[existingIndex].jamiNarxi = yangiMiqdor * Number(selectedGul.gulnarxi);
+      currentCart[idx].miqdori = yangi;
+      currentCart[idx].jamiNarxi = yangi * Number(selectedGul.gulnarxi);
     } else {
       currentCart.push(cartItem);
     }
 
-    // LocalStorage ga yozish
     localStorage.setItem("savat", JSON.stringify(currentCart));
-    
-    // Header yoki Savat komponenti darhol yangilanishi uchun custom event chaqiramiz
     window.dispatchEvent(new Event("cartUpdated"));
-    
-    // Siz so'ragan alert xabarnomasi
-    alert(`${selectedGul.gulnomi} savatga muvaffaqiyatli qo'shildi!`);
-    setSelectedGul(null); // Oynani yopish
+    showToast(`${selectedGul.gulnomi} savatga qoʻshildi! 🌿`);
+    setSelectedGul(null);
   };
 
+  // IZOH YUBORISH
+  const submitIzoh = async (e) => {
+    e.preventDefault();
+    if (!form.baho) return showToast("Yulduzcha bosib baho bering");
+    if (form.matn.trim().length < 3) return showToast("Izoh matnini yozing");
+    setSending(true);
+    const item = await sendIzoh({
+      gul_id: selectedGul.id,
+      ism: form.ism.trim() || "Mehmon",
+      baho: form.baho,
+      matn: form.matn.trim(),
+    });
+    const list = [item, ...izohlar];
+    const s = stat(list);
+    setIzohlar(list);
+    setGullar((g) => g.map((x) => (x.id === selectedGul.id ? { ...x, baho: s.avg, izohlar_soni: s.n } : x)));
+    try { localStorage.setItem("izoh_ism", form.ism.trim()); } catch {}
+    setForm((f) => ({ ...f, baho: 0, matn: "" }));
+    setSending(false);
+    showToast("Izohingiz uchun rahmat! 🌿");
+  };
+
+  const ms = selectedGul
+    ? loadingIz
+      ? { avg: Number(selectedGul.baho) || 0, n: Number(selectedGul.izohlar_soni) || 0 }
+      : stat(izohlar)
+    : null;
+  const out = selectedGul && Number(selectedGul.soni) === 0;
+
   return (
-    <section className="catalog-section">
+    <section className="catalog-section" id="mahsulotlar">
       <div className="custom-container">
         {gullar.length > 0 ? (
           <div className={`product-grid ${isRefreshing ? "refreshing" : ""}`}>
-            {gullar.map((gul) => (
-              <div
-                className="flower-card"
-                key={gul.id}
-                onClick={() => {
-                  setSelectedGul(gul);
-                  setCount(1);
-                }}
-              >
-                {/* Mahsulot Rasmi */}
-                <div className="flower-img-box">
-                  <img
-                    src={`http://gulbozor.loc/frontend/web/images/${gul.gulrasmi}`}
-                    alt={gul.gulnomi}
-                  />
+            {gullar.map((gul, i) => {
+              const soni = Number(gul.soni) || 0;
+              const baho = Number(gul.baho) || 0;
+              const n = Number(gul.izohlar_soni) || 0;
+              return (
+                <div
+                  className="flower-card"
+                  key={gul.id}
+                  style={{ animationDelay: `${Math.min(i, 12) * 45}ms` }}
+                  onClick={() => openGul(gul)}
+                >
+                  <div className="flower-img-box">
+                    <img
+                      ref={(el) => el && el.complete && el.classList.add("loaded")}
+                      onLoad={(e) => e.currentTarget.classList.add("loaded")}
+                      onError={(e) => e.currentTarget.classList.add("loaded")}
+                      loading="lazy"
+                      src={`${IMG}${gul.gulrasmi}`}
+                      alt={gul.gulnomi}
+                    />
+                    {soni === 0 && <span className="stock-badge out">Tugagan</span>}
+                    {soni > 0 && soni <= 3 && <span className="stock-badge">Oxirgi {soni} ta</span>}
+                  </div>
+
+                  <div className="flower-info">
+                    <h3 className="flower-name">{gul.gulnomi}</h3>
+                    <div className="card-rating">
+                      <Stars value={baho} size={15} />
+                      <span>{n > 0 ? `${baho.toFixed(1)} (${n})` : "Baho yoʻq"}</span>
+                    </div>
+                    <p className="flower-price">{Number(gul.gulnarxi).toLocaleString()} UZS</p>
+                    <p className={`flower-stock ${soni <= 3 ? "low" : ""}`}>
+                      Omborda: <b>{soni}</b> dona
+                    </p>
+                    <button className="view-btn">Batafsil</button>
+                  </div>
                 </div>
-                
-                {/* Mahsulot Ma'lumotlari */}
-                <div className="flower-info">
-                  <h3 className="flower-name">{gul.gulnomi}</h3>
-                  <p className="flower-price">
-                    {Number(gul.gulnarxi).toLocaleString()} UZS
-                  </p>
-                  <button className="view-btn">Batafsil</button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           !isRefreshing && (
@@ -135,82 +276,149 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
                 </div>
                 <h3 className="empty-title">Hech narsa topilmadi</h3>
                 <p className="empty-text">
-                  Siz qidirgan gul ma'lumotlari saytda mavjud emas. <br /> 
-                  Boshqa kategoriyalarni sinab ko'ring.
+                  Siz qidirgan gul maʼlumotlari saytda mavjud emas. <br />
+                  Boshqa kategoriyalarni sinab koʻring.
                 </p>
               </div>
             </div>
           )
         )}
 
-        {/* BATAFSIL MODAL OYNASI */}
+        {/* ===== KATTA MODAL ===== */}
         {selectedGul && (
           <div className="modal-overlay" onClick={() => setSelectedGul(null)}>
-            <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-              <button
-                className="close-x-btn"
-                onClick={() => setSelectedGul(null)}
-              >
+            <div className="modal-card" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
+              <button className="close-x-btn" onClick={() => setSelectedGul(null)} aria-label="Yopish">
                 <img src={closeIcon} alt="X" />
               </button>
+
               <div className="modal-content-flex">
-                {/* Modal Rasm qismi */}
                 <div className="modal-image-side">
-                  <img
-                    src={`http://gulbozor.loc/frontend/web/images/${selectedGul.gulrasmi}`}
-                    alt={selectedGul.gulnomi}
-                  />
+                  <img src={`${IMG}${selectedGul.gulrasmi}`} alt={selectedGul.gulnomi} />
                 </div>
-                
-                {/* Modal Tafsilotlar qismi */}
+
                 <div className="modal-details-side">
-                  <span className="modal-category-tag">
-                    {getCatName(selectedGul.kategoriya_id)}
-                  </span>
+                  <span className="modal-category-tag">{getCatName(selectedGul.kategoriya_id)}</span>
                   <h2 className="modal-product-title">{selectedGul.gulnomi}</h2>
-                  <div className="modal-description-box">
-                    <p>
-                      {selectedGul.gulmalumoti || "Ma'lumot tez kunda qo'shiladi."}
-                    </p>
-                  </div>
-                  
-                  <div className="modal-info-grid">
-                    <div className="info-item">
-                      <span className="label">Narxi:</span>
-                      <span className="value">
-                        {Number(selectedGul.gulnarxi).toLocaleString()} UZS
-                      </span>
-                    </div>
-                    <div className="info-item">
-                      <span className="label">Omborda:</span>
-                      <span className={`value ${Number(selectedGul.soni) === 0 ? "out-of-stock" : ""}`}>
-                        {selectedGul.soni || 0} dona
-                      </span>
-                    </div>
+
+                  <button className="modal-rating" onClick={() => setTab("izoh")}>
+                    <Stars value={ms.avg} size={18} />
+                    <b>{ms.n ? ms.avg.toFixed(1) : "0.0"}</b>
+                    <span>({ms.n} ta izoh)</span>
+                  </button>
+
+                  <div className="modal-tabs" role="tablist">
+                    <button className={tab === "info" ? "on" : ""} onClick={() => setTab("info")}>
+                      Maʼlumot
+                    </button>
+                    <button className={tab === "izoh" ? "on" : ""} onClick={() => setTab("izoh")}>
+                      Izohlar ({ms.n})
+                    </button>
                   </div>
 
-                  {/* Bosharuv paneli (Soni va Qo'shish) */}
-                  <div className="modal-footer-controls">
-                    <div className="counter-wrapper">
-                      <button onClick={decrement} disabled={count <= 1}>
-                        −
-                      </button>
-                      <span className="count-display">{count}</span>
-                      <button
-                        onClick={increment}
-                        disabled={count >= Number(selectedGul.soni)}
-                      >
-                        +
+                  <div className="modal-tab-body" key={tab}>
+                    {tab === "info" ? (
+                      <>
+                        <div className="modal-description-box">
+                          <p>{selectedGul.gulmalumoti || "Maʼlumot tez kunda qoʻshiladi."}</p>
+                        </div>
+                        <div className="modal-info-grid">
+                          <div className="info-item">
+                            <span className="label">Narxi:</span>
+                            <span className="value">{Number(selectedGul.gulnarxi).toLocaleString()} UZS</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="label">Omborda:</span>
+                            <span className={`value ${out ? "out-of-stock" : ""}`}>{selectedGul.soni || 0} dona</span>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="rating-summary">
+                          <div className="rs-big">
+                            <strong>{ms.n ? ms.avg.toFixed(1) : "0.0"}</strong>
+                            <Stars value={ms.avg} size={16} />
+                            <small>{ms.n} ta izoh</small>
+                          </div>
+                          <div className="rs-bars">
+                            {[5, 4, 3, 2, 1].map((s) => {
+                              const c = izohlar.filter((r) => Math.round(r.baho) === s).length;
+                              return (
+                                <div className="rs-row" key={s}>
+                                  <span>{s}★</span>
+                                  <i><b style={{ width: `${ms.n ? (c / ms.n) * 100 : 0}%` }} /></i>
+                                  <span>{c}</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        <form className="izoh-form" onSubmit={submitIzoh}>
+                          <h4>Izoh qoldiring</h4>
+                          <StarInput value={form.baho} onChange={(b) => setForm({ ...form, baho: b })} />
+                          <input
+                            type="text"
+                            placeholder="Ismingiz"
+                            maxLength={60}
+                            value={form.ism}
+                            onChange={(e) => setForm({ ...form, ism: e.target.value })}
+                          />
+                          <textarea
+                            rows={3}
+                            maxLength={500}
+                            placeholder="Gul haqida fikringiz…"
+                            value={form.matn}
+                            onChange={(e) => setForm({ ...form, matn: e.target.value })}
+                          />
+                          <button type="submit" className="send-btn" disabled={sending}>
+                            {sending ? "Yuborilmoqda…" : "Yuborish"}
+                          </button>
+                        </form>
+
+                        <div className="izoh-list">
+                          {loadingIz ? (
+                            <p className="izoh-empty">Izohlar yuklanmoqda…</p>
+                          ) : izohlar.length === 0 ? (
+                            <p className="izoh-empty">Hali izoh yoʻq. Birinchi boʻlib fikr bildiring! 🌱</p>
+                          ) : (
+                            izohlar.map((r) => (
+                              <div className="izoh-item" key={r.id}>
+                                <div className="avatar">{(r.ism || "M").charAt(0).toUpperCase()}</div>
+                                <div className="izoh-body">
+                                  <div className="izoh-top">
+                                    <b>{r.ism || "Mehmon"}</b>
+                                    <Stars value={Number(r.baho)} size={14} />
+                                  </div>
+                                  <p>{r.matn}</p>
+                                  <small>{fmtDate(r.sana)}</small>
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="modal-footer">
+                    <div className="total-price-box">
+                      <span className="total-label">Jami narx:</span>
+                      <span className="total-value">
+                        {(count * Number(selectedGul.gulnarxi)).toLocaleString()} UZS
+                      </span>
+                    </div>
+                    <div className="modal-footer-controls">
+                      <div className="counter-wrapper">
+                        <button onClick={decrement} disabled={count <= 1}>−</button>
+                        <span className="count-display">{count}</span>
+                        <button onClick={increment} disabled={count >= Number(selectedGul.soni)}>+</button>
+                      </div>
+                      <button className="add-to-cart-btn" onClick={handleAddToCart} disabled={out}>
+                        {out ? "Zaxirada yoʻq" : "Savatga qoʻshish"}
                       </button>
                     </div>
-                    
-                    <button 
-                      className="add-to-cart-btn" 
-                      onClick={handleAddToCart}
-                      disabled={Number(selectedGul.soni) === 0}
-                    >
-                      {Number(selectedGul.soni) === 0 ? "Zaxirada yo'q" : "Savatga qo'shish"}
-                    </button>
                   </div>
                 </div>
               </div>
@@ -218,6 +426,8 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
           </div>
         )}
       </div>
+
+      <div className={`gb-toast ${toast ? "on" : ""}`} role="status">{toast}</div>
     </section>
   );
 };

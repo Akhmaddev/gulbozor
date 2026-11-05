@@ -31,8 +31,8 @@ const Footer = () => {
   const socialMedia = [
     { name: 'Telegram',  icon: 'fab fa-telegram-plane', link: 'https://t.me/gulbozor_uz',                        color: '#29a9eb' },
     { name: 'Instagram', icon: 'fab fa-instagram',      link: 'https://instagram.com/gulbozor_uz_optom',         color: '#e1306c' },
-    { name: 'YouTube',   icon: 'fab fa-youtube',        link: 'https://youtube.com/yourchannel',                 color: '#ff3d3d' },
-    { name: 'Facebook',  icon: 'fab fa-facebook-f',     link: 'https://facebook.com/yourpage',                   color: '#1877f2' },
+    { name: 'YouTube',   icon: 'fab fa-youtube',        link: 'https://youtube.com/@gulbozor_uz',                 color: '#ff3d3d' },
+    { name: 'Facebook',  icon: 'fab fa-facebook-f',     link: 'https://facebook.com/gulbozor_uz',                   color: '#1877f2' },
     { name: 'WeChat',    icon: 'fab fa-weixin',         link: '#wechat',                                         color: '#07c160' }
   ];
 

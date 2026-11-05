@@ -14,7 +14,21 @@ class Gullar extends \yii\db\ActiveRecord
             [['gulmalumoti'], 'string'],
         ];
     }
+    public function fields()
+{
+    $f = parent::fields();
 
+    $f['baho'] = function () {
+        return round((float)(new \yii\db\Query())
+            ->from('izohlar')->where(['gul_id' => $this->id])->average('baho'), 1);
+    };
+    $f['izohlar_soni'] = function () {
+        return (int)(new \yii\db\Query())
+            ->from('izohlar')->where(['gul_id' => $this->id])->count();
+    };
+
+    return $f;
+}
     public function getKategoriya() {
         return $this->hasOne(Kategoriya::class, ['id' => 'kategoriya_id']);
     }
