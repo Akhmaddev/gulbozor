@@ -72,7 +72,9 @@ const fmtDate = (s) => {
 };
 
 /* ---------- Asosiy komponent ---------- */
-const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
+// categoryId  — tanlangan kategoriya (null = hammasi)
+// categoryIds — birlashtirilgan kategoriyalar ro'yxati (masalan xonaki + ekzotik: [1, 4])
+const Mahsulotlar = ({ categoryId, categoryIds, searchTerm, categories }) => {
   const [gullar, setGullar] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedGul, setSelectedGul] = useState(null);
@@ -91,19 +93,58 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
     toastTimer.current = setTimeout(() => setToast(""), 2600);
   };
 
-  // Mahsulotlarni yuklash
+  // Kategoriyalar kaliti: "1,4" yoki "3" yoki "" (hammasi)
+  const idsKey =
+    Array.isArray(categoryIds) && categoryIds.length > 0
+      ? categoryIds.join(",")
+      : categoryId
+      ? String(categoryId)
+      : "";
+
+  // Mahsulotlarni yuklash (bir nechta kategoriya bo'lsa — birlashtiriladi)
   useEffect(() => {
+    let cancelled = false;
     setIsRefreshing(true);
-    let url = `${API}/gullar?q=${searchTerm || ""}`;
-    if (categoryId && !searchTerm) url += `&kategoriya_id=${categoryId}`;
-    axios
-      .get(url)
-      .then((res) => {
-        setGullar(res.data || []);
+
+    const base = `${API}/gullar?q=${encodeURIComponent(searchTerm || "")}`;
+    const ids = !searchTerm && idsKey ? idsKey.split(",") : [null];
+
+    Promise.all(
+      ids.map((id) =>
+        axios
+          .get(id ? `${base}&kategoriya_id=${id}` : base)
+          .then((res) => (Array.isArray(res.data) ? res.data : []))
+          .catch(() => null) // xato bo'lsa null qaytaradi
+      )
+    ).then((results) => {
+      if (cancelled) return;
+
+      // Hamma so'rovlar xato bo'lsa — eski ro'yxat qoladi
+      if (results.every((r) => r === null)) {
         setIsRefreshing(false);
-      })
-      .catch(() => setIsRefreshing(false));
-  }, [categoryId, searchTerm]);
+        return;
+      }
+
+      // Natijalarni birlashtirish va takrorlarni olib tashlash
+      const seen = new Set();
+      const merged = [];
+      results.forEach((list) => {
+        (list || []).forEach((gul) => {
+          if (!seen.has(gul.id)) {
+            seen.add(gul.id);
+            merged.push(gul);
+          }
+        });
+      });
+
+      setGullar(merged);
+      setIsRefreshing(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [idsKey, searchTerm]);
 
   // Saqlangan ismni olish
   useEffect(() => {
@@ -141,6 +182,7 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
     setCount(1);
     setTab("info");
     setIzohlar([]);
+    setLoadingIz(true);
     setForm((f) => ({ ...f, baho: 0, matn: "" }));
   };
 
@@ -237,6 +279,14 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
                   key={gul.id}
                   style={{ animationDelay: `${Math.min(i, 12) * 45}ms` }}
                   onClick={() => openGul(gul)}
+                  tabIndex={0}
+                  role="button"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openGul(gul);
+                    }
+                  }}
                 >
                   <div className="flower-img-box">
                     <img
@@ -301,11 +351,27 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
                   <span className="modal-category-tag">{getCatName(selectedGul.kategoriya_id)}</span>
                   <h2 className="modal-product-title">{selectedGul.gulnomi}</h2>
 
-                  <button className="modal-rating" onClick={() => setTab("izoh")}>
-                    <Stars value={ms.avg} size={18} />
-                    <b>{ms.n ? ms.avg.toFixed(1) : "0.0"}</b>
-                    <span>({ms.n} ta izoh)</span>
-                  </button>
+                  <div className="modal-meta">
+                    <button className="modal-rating" onClick={() => setTab("izoh")}>
+                      <Stars value={ms.avg} size={18} />
+                      <b>{ms.n ? ms.avg.toFixed(1) : "0.0"}</b>
+                      <span>({ms.n} ta izoh)</span>
+                    </button>
+                    <span className={`modal-stock ${Number(selectedGul.soni) <= 3 ? "low" : ""}`}>
+                      Omborda: <b>{Number(selectedGul.soni) || 0}</b> dona
+                    </span>
+                  </div>
+
+                  <div className="modal-info-grid">
+                    <div className="info-item">
+                      <span className="label">Narxi:</span>
+                      <span className="value">{Number(selectedGul.gulnarxi).toLocaleString()} UZS</span>
+                    </div>
+                    <div className="info-item">
+                      <span className="label">Omborda:</span>
+                      <span className={`value ${out ? "out-of-stock" : ""}`}>{selectedGul.soni || 0} dona</span>
+                    </div>
+                  </div>
 
                   <div className="modal-tabs" role="tablist">
                     <button className={tab === "info" ? "on" : ""} onClick={() => setTab("info")}>
@@ -318,21 +384,9 @@ const Mahsulotlar = ({ categoryId, searchTerm, categories }) => {
 
                   <div className="modal-tab-body" key={tab}>
                     {tab === "info" ? (
-                      <>
-                        <div className="modal-description-box">
-                          <p>{selectedGul.gulmalumoti || "Maʼlumot tez kunda qoʻshiladi."}</p>
-                        </div>
-                        <div className="modal-info-grid">
-                          <div className="info-item">
-                            <span className="label">Narxi:</span>
-                            <span className="value">{Number(selectedGul.gulnarxi).toLocaleString()} UZS</span>
-                          </div>
-                          <div className="info-item">
-                            <span className="label">Omborda:</span>
-                            <span className={`value ${out ? "out-of-stock" : ""}`}>{selectedGul.soni || 0} dona</span>
-                          </div>
-                        </div>
-                      </>
+                      <div className="modal-description-box">
+                        <p>{selectedGul.gulmalumoti || "Maʼlumot tez kunda qoʻshiladi."}</p>
+                      </div>
                     ) : (
                       <>
                         <div className="rating-summary">

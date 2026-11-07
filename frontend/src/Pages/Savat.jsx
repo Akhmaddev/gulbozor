@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Savat.css";
+import emptyCartImg from "../assets/hmm.png"; // O'zingiz qo'yadigan rasm yo'li
 
 const Savat = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -74,7 +75,10 @@ const Savat = () => {
   };
 
   // Jami summani hisoblash (Xatolarsiz xavfsiz holatda)
-  const totalSumma = cartItems.reduce((acc, item) => acc + (Number(item.jamiNarxi) || 0), 0);
+  const totalSumma = cartItems.reduce(
+    (acc, item) => acc + (Number(item.jamiNarxi) || 0),
+    0
+  );
 
   return (
     <div className="savat-page">
@@ -83,8 +87,7 @@ const Savat = () => {
 
         {cartItems.length > 0 ? (
           <div className="savat-wrapper">
-            
-            {/* CHIZMADAGI MAHSULOTLAR MATRIX/GRID QISMI */}
+            {/* MAHSULOTLAR GRID QISMI */}
             <div className="savat-products-grid">
               {cartItems.map((item) => (
                 <div className="savat-card" key={item.id}>
@@ -103,7 +106,7 @@ const Savat = () => {
                   <div className="savat-card-info">
                     <div className="savat-card-header">
                       <h3 className="savat-item-name">{item.nomi}</h3>
-                      <button 
+                      <button
                         className="savat-item-remove-btn"
                         onClick={() => handleRemoveItem(item.id)}
                       >
@@ -115,17 +118,17 @@ const Savat = () => {
                       {Number(item.narxi).toLocaleString()} UZS
                     </p>
 
-                    {/* Chizmadagi boshqaruv paneli: [+] soni X [-] */}
+                    {/* Boshqaruv paneli: [+] soni X [-] */}
                     <div className="savat-counter-box">
-                      <button 
-                        className="savat-cnt-btn plus" 
+                      <button
+                        className="savat-cnt-btn plus"
                         onClick={() => handleIncrement(item.id)}
                       >
                         +
                       </button>
                       <span className="savat-cnt-text">soni: {item.miqdori}</span>
-                      <button 
-                        className="savat-cnt-btn minus" 
+                      <button
+                        className="savat-cnt-btn minus"
                         onClick={() => handleDecrement(item.id)}
                       >
                         &minus;
@@ -136,7 +139,7 @@ const Savat = () => {
               ))}
             </div>
 
-            {/* O'NG TOMONDAGI JAMI SUMMA VA XARID QILISH OYNASI */}
+            {/* JAMI SUMMA VA XARID QILISH OYNASI */}
             <div className="savat-summary-panel">
               <h3 className="summary-title">Buyurtma Hisobi</h3>
               <div className="summary-row">
@@ -149,18 +152,28 @@ const Savat = () => {
                   {totalSumma.toLocaleString()} UZS
                 </span>
               </div>
-              <button 
-                className="savat-submit-btn" 
-                onClick={() => alert("Buyurtmangiz muvaffaqiyatli rasmiylashtirildi!")}
+              <button
+                className="savat-submit-btn"
+                onClick={() =>
+                  alert("Buyurtmangiz muvaffaqiyatli rasmiylashtirildi!")
+                }
               >
                 Xaridni rasmiylashtirish
               </button>
             </div>
-
           </div>
         ) : (
+          /* SAVAT BO'SH BO'LGANDA RASM + MATN */
           <div className="savat-empty-screen">
-            <p>Savatingizda hozircha hech narsa yo'q.</p>
+            <img
+              src={emptyCartImg}
+              alt="Savat bo'sh"
+              className="savat-empty-img"
+            />
+            <h2 className="savat-empty-title">Savatingiz bo'sh</h2>
+            <p className="savat-empty-text">
+              Savatingizda hozircha hech narsa yo'q.
+            </p>
           </div>
         )}
       </div>

@@ -1,242 +1,264 @@
 /* Umumiy sahifa foni */
 .savat-page {
-    padding-top: 15px;         /* Tepadan keraksiz katta bo'shliq kamaytirildi */
-    padding-bottom: 40px;
-    background-color: #f8fafc;
-    min-height: 75vh;
-    font-family: sans-serif;
-    display: block;
-    overflow: hidden;          /* NAVBARDAN SURILIB KETISHINI TO'LIQ TUZATADI */
-  }
-  
-  .savat-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 16px;
-  }
-  
-  .savat-main-title {
-    font-size: 26px;
-    font-weight: 700;
-    color: #1e293b;
-    margin-top: 10px;          /* Sarlavha tepasidagi standart joy tartibga solindi */
-    margin-bottom: 24px;
-  }
-  
-  /* Moslashuvchan asosiy blok container */
+  padding-top: 15px;
+  padding-bottom: 40px;
+  background-color: #f8fafc;
+  min-height: 75vh;
+  font-family: sans-serif;
+  display: block;
+  overflow: hidden; /* NAVBARDAN SURILIB KETISHINI TO'LIQ TUZATADI */
+}
+
+.savat-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.savat-main-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 10px;
+  margin-bottom: 24px;
+}
+
+/* Moslashuvchan asosiy blok container */
+.savat-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Kompyuter ekranida yonma-yon joylashish */
+@media (min-width: 992px) {
   .savat-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-  
-  /* Agar ekran kompyuter bo'lsa (Desktop) - Yonma yon joylashish */
-  @media (min-width: 992px) {
-    .savat-wrapper {
-      flex-direction: row;
-      align-items: flex-start;
-    }
-  }
-  
-  /* CHIZMADAGI MAHSULOTLAR SETKASI (GRID) */
-  .savat-products-grid {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1fr; /* Mobil telefonda 1 tadan qator */
-    gap: 16px;
-  }
-  
-  /* Kompyuter ekranida mahsulotlarni yonma-yon 2 qator qilish */
-  @media (min-width: 640px) {
-    .savat-products-grid {
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    }
-  }
-  
-  /* MAHSULOT KARTOCHKASI (OQ FONDAGI BLOK) */
-  .savat-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 16px;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-  }
-  
-  /* Chap tomondagi rasm qutisi */
-  .savat-card-img {
-    width: 90px;
-    height: 90px;
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: #f1f5f9;
-    flex-shrink: 0;
-  }
-  
-  .savat-card-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  /* O'ng tomondagi matnlar qismi */
-  .savat-card-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  
-  .savat-card-header {
-    display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     align-items: flex-start;
   }
-  
-  .savat-item-name {
-    font-size: 16px;
-    font-weight: 600;
-    color: #1e293b;
-    margin: 0;
-    line-height: 1.3;
+}
+
+/* MAHSULOTLAR SETKASI (GRID) */
+.savat-products-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr; /* Mobil telefonda 1 tadan qator */
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .savat-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   }
-  
-  .savat-item-remove-btn {
-    background: none;
-    border: none;
-    color: #94a3b8;
-    font-size: 22px;
-    cursor: pointer;
-    line-height: 1;
-    padding: 0 0 0 8px;
-    transition: color 0.2s;
-  }
-  
-  .savat-item-remove-btn:hover {
-    color: #ef4444;
-  }
-  
-  .savat-item-price {
-    font-size: 15px;
-    font-weight: 700;
-    color: #22c55e; /* Yashil rang */
-    margin: 0;
-  }
-  
-  /* CHIZMADAGI SANAGICH BLOCKI: [+] soni 0 [-] */
-  .savat-counter-box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 1.5px solid #22c55e; /* To'liq yashil ramka */
-    border-radius: 8px;
-    overflow: hidden;
-    max-width: 150px;
-    background-color: #ffffff;
-    margin-top: 4px;
-  }
-  
-  .savat-cnt-btn {
-    background: none;
-    border: none;
-    width: 36px;
-    height: 30px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #22c55e;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.1s;
-  }
-  
-  .savat-cnt-btn:hover {
-    background-color: #f0fdf4; /* Och yashil fonga o'tish effekti */
-  }
-  
-  .savat-cnt-text {
-    font-size: 13px;
-    font-weight: 600;
-    color: #475569;
-  }
-  
-  /* JAMI SUMMA VA CHEKOUT QISMI */
+}
+
+/* MAHSULOT KARTOCHKASI */
+.savat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+/* Chap tomondagi rasm qutisi */
+.savat-card-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #f1f5f9;
+  flex-shrink: 0;
+}
+
+.savat-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* O'ng tomondagi matnlar qismi */
+.savat-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.savat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.savat-item-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.savat-item-remove-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 0 0 8px;
+  transition: color 0.2s;
+}
+
+.savat-item-remove-btn:hover {
+  color: #ef4444;
+}
+
+.savat-item-price {
+  font-size: 15px;
+  font-weight: 700;
+  color: #22c55e;
+  margin: 0;
+}
+
+/* SANAGICH BLOCKI: [+] soni 0 [-] */
+.savat-counter-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.5px solid #22c55e;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 150px;
+  background-color: #ffffff;
+  margin-top: 4px;
+}
+
+.savat-cnt-btn {
+  background: none;
+  border: none;
+  width: 36px;
+  height: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #22c55e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s;
+}
+
+.savat-cnt-btn:hover {
+  background-color: #f0fdf4;
+}
+
+.savat-cnt-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* JAMI SUMMA VA CHEKOUT QISMI */
+.savat-summary-panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+@media (min-width: 992px) {
   .savat-summary-panel {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 20px;
-    width: 100%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    width: 320px;
+    position: sticky;
+    top: 20px;
   }
-  
-  @media (min-width: 992px) {
-    .savat-summary-panel {
-      width: 320px;
-      position: sticky;
-      top: 20px;
-    }
-  }
-  
-  .summary-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1e293b;
-    margin: 0 0 16px 0;
-  }
-  
-  .summary-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    color: #64748b;
-    margin-bottom: 12px;
-  }
-  
-  .total-row {
-    border-top: 1px dashed #e2e8f0;
-    padding-top: 14px;
-    margin-top: 14px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #1e293b;
-  }
-  
-  .total-price-green {
-    font-size: 18px;
-    font-weight: 700;
-    color: #22c55e;
-  }
-  
-  /* Yashil xarid tugmasi */
-  .savat-submit-btn {
-    width: 100%;
-    background-color: #22c55e;
-    color: #ffffff;
-    border: none;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: background-color 0.2s;
-  }
-  
-  .savat-submit-btn:hover {
-    background-color: #16a34a;
-  }
-  
-  /* Savat bo'sh bo'lgan holat */
-  .savat-empty-screen {
-    background: #ffffff;
-    border: 1px dashed #cbd5e1;
-    border-radius: 16px;
-    padding: 50px;
-    text-align: center;
-    color: #94a3b8;
-    font-size: 16px;
-  }
+}
+
+.summary-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 16px 0;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.total-row {
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 14px;
+  margin-top: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.total-price-green {
+  font-size: 18px;
+  font-weight: 700;
+  color: #22c55e;
+}
+
+/* Yashil xarid tugmasi */
+.savat-submit-btn {
+  width: 100%;
+  background-color: #22c55e;
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.2s;
+}
+
+.savat-submit-btn:hover {
+  background-color: #16a34a;
+}
+
+/* SAVAT BO'SH BO'LGAN HOLAT (rasm bilan) */
+.savat-empty-screen {
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 50px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.savat-empty-img {
+  width: 100%;
+  max-width: 260px; /* Rasm o'lchamini shu yerdan o'zgartiring */
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.savat-empty-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.savat-empty-text {
+  font-size: 15px;
+  color: #94a3b8;
+  margin: 0;
+}

@@ -1,20 +1,49 @@
+/* ===== Oq-yashil tez va silliq dizayn ===== */
 .compact-category-wrapper {
+    --green-50: #f0fdf4;
+    --green-100: #dcfce7;
+    --green-200: #bbf7d0;
+    --green-400: #4ade80;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+    --text: #334155;
+    --border: #e5efe8;
+
+    /* Tez boshlanib, yumshoq to'xtaydigan egri chiziq */
+    --ease: cubic-bezier(0.25, 1, 0.35, 1);
+    --speed: 0.28s;
+
     width: 100%;
     max-width: 1200px;
-    margin: 5px auto 15px; /* Navbardan keyin juda kichik masofa */
+    margin: 5px auto 15px;
     padding: 0 10px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.compact-swiper {
+    padding: 10px 6px 16px;
     overflow: hidden;
 }
 
+/* ===== Karta ===== */
 .story-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 5px 0;
+    padding: 4px 0;
     cursor: pointer;
+    outline: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation; /* telefonda bosish kechikmaydi */
+    animation: storyFadeIn 0.35s ease both;
 }
 
+/* ===== Aylana ===== */
 .story-img-circle {
+    position: relative;
+    isolation: isolate;
     width: 60px;
     height: 60px;
     background: #ffffff;
@@ -22,44 +51,218 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 4px;
-    border: 1.5px solid #e2e8f0;
-    transition: 0.3s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    margin-bottom: 6px;
+    border: 1.5px solid var(--border);
+    transition:
+        transform var(--speed) var(--ease),
+        border-color var(--speed) ease;
+    will-change: transform;
 }
 
-.story-card:hover .story-img-circle {
-    border-color: #22c55e;
-    transform: scale(1.05);
+/* Aktiv fon + yashil nur (opacity bilan silliq paydo bo'ladi) */
+.story-img-circle::before {
+    content: "";
+    position: absolute;
+    inset: -1.5px;
+    z-index: -1;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #ffffff 0%, var(--green-100) 100%);
+    box-shadow:
+        0 0 0 3px rgba(34, 197, 94, 0.2),
+        0 6px 14px rgba(34, 197, 94, 0.28);
+    opacity: 0;
+    transition: opacity var(--speed) ease;
 }
 
 .story-img-circle img {
     width: 70%;
     height: 70%;
     object-fit: contain;
+    transition: transform var(--speed) var(--ease);
+    pointer-events: none;
 }
 
+/* Hover — faqat sichqoncha bor qurilmalarda */
+@media (hover: hover) {
+    .story-card:hover .story-img-circle {
+        border-color: var(--green-400);
+        transform: translateY(-3px) scale(1.06);
+    }
+
+    .story-card:hover .story-img-circle::before {
+        opacity: 0.55;
+    }
+
+    .story-card:hover .story-img-circle img {
+        transform: scale(1.08);
+    }
+
+    .story-card:hover .story-name {
+        color: var(--green-600);
+    }
+}
+
+/* Bosilganda */
+.story-card:active .story-img-circle {
+    transform: scale(0.94);
+    transition-duration: 0.12s;
+}
+
+/* Klaviatura fokusi */
+.story-card:focus-visible .story-img-circle {
+    border-color: var(--green-500);
+}
+
+.story-card:focus-visible .story-img-circle::before {
+    opacity: 1;
+}
+
+/* ===== Aktiv holat ===== */
+.active-story .story-img-circle {
+    border-color: var(--green-500);
+    transform: translateY(-2px) scale(1.06);
+}
+
+.active-story .story-img-circle::before {
+    opacity: 1;
+}
+
+.active-story .story-img-circle img {
+    transform: scale(1.1);
+}
+
+/* ===== Nom ===== */
 .story-name {
-    font-size: 10px; 
+    position: relative;
+    isolation: isolate;
+    font-size: 10px;
     font-weight: 600;
-    color: #334155;
+    color: var(--text);
     text-align: center;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding: 2px 6px;
+    border-radius: 20px;
+    transition: color var(--speed) ease;
 }
 
+/* Yashil "tabletka" fon (opacity bilan silliq o'tadi) */
+.story-name::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--green-500), var(--green-600));
+    opacity: 0;
+    transform: scale(0.85);
+    transition:
+        opacity var(--speed) ease,
+        transform var(--speed) var(--ease);
+}
 
+.active-story .story-name {
+    color: #ffffff;
+}
+
+.active-story .story-name::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ===== Yuklanish skeleti ===== */
+.story-skeleton-row {
+    display: flex;
+    gap: 12px;
+    padding: 10px 6px 16px;
+    overflow: hidden;
+}
+
+.story-skeleton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.skeleton-circle,
+.skeleton-line {
+    background: linear-gradient(
+        90deg,
+        var(--green-50) 25%,
+        var(--green-100) 50%,
+        var(--green-50) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 6px;
+}
+
+.skeleton-line {
+    width: 44px;
+    height: 10px;
+    border-radius: 10px;
+}
+
+/* ===== Animatsiyalar ===== */
+@keyframes storyFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes skeletonShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ===== Katta ekranlar ===== */
 @media (min-width: 1024px) {
-    .story-img-circle {
+    .compact-category-wrapper {
+        margin: 15px auto 25px;
+    }
+
+    .story-img-circle,
+    .skeleton-circle {
         width: 80px;
         height: 80px;
     }
+
     .story-name {
         font-size: 12px;
     }
-    .compact-category-wrapper {
-        margin: 15px auto 25px;
+
+    .skeleton-line {
+        width: 56px;
+    }
+}
+
+/* ===== Animatsiyani kamaytirishni xohlaganlar uchun ===== */
+@media (prefers-reduced-motion: reduce) {
+    .story-card,
+    .story-img-circle,
+    .story-img-circle::before,
+    .story-img-circle img,
+    .story-name,
+    .story-name::before,
+    .skeleton-circle,
+    .skeleton-line {
+        animation: none;
+        transition: none;
     }
 }
