@@ -1,303 +1,363 @@
-/* ═══════════════════════════════════════════════
-   GULBOZOR FOOTER — Glassmorphism (qora + yashil)
-   Orqada yashil yorug'lik, ustida shisha panellar
-   ═══════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
-   .gulbozor-footer {
-    --g-green: #22c55e;
-    --g-glass: rgba(255, 255, 255, 0.06);
-    --g-glass-strong: rgba(255, 255, 255, 0.1);
-    --g-border: rgba(255, 255, 255, 0.14);
-    --g-text: #f2f7f4;
-    --g-muted: #9db0a5;
-  
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    margin-top: auto;
-    padding: 48px 0 0;
-    color: var(--g-text);
-    font-family: 'Inter', sans-serif;
-    background: #050a07;
-    border-top: 1px solid rgba(34, 197, 94, 0.45);
-  }
-  
-  /* Orqa fondagi yashil yorug'lik dog'lari — shisha ularni xira qilib ko'rsatadi */
-  .gulbozor-footer::before,
-  .gulbozor-footer::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    border-radius: 50%;
-    filter: blur(80px);
-    pointer-events: none;
-  }
-  
-  .gulbozor-footer::before {
-    width: min(460px, 90vw);
-    height: min(460px, 90vw);
-    top: -160px;
-    left: -140px;
-    background: rgba(34, 197, 94, 0.38);
-  }
-  
-  .gulbozor-footer::after {
-    width: min(420px, 85vw);
-    height: min(420px, 85vw);
-    right: -140px;
-    bottom: -180px;
-    background: rgba(20, 184, 166, 0.28);
-  }
-  
-  /* ═══ Asosiy joylashuv ═══ */
+/* =========================================================
+   Gulbozor footer — oq va yashil, yumshoq (smooth) dizayn
+   ========================================================= */
+
+.gulbozor-footer {
+  --g-900: #14532d;
+  --g-800: #166534;
+  --g-700: #15803d;
+  --g-600: #16a34a;
+  --g-500: #22c55e;
+  --g-100: #dcfce7;
+  --g-50: #f0fdf4;
+  --ink: #16301f;
+  --muted: #5b7565;
+  --line: #dcebe1;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  margin-top: 80px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff 0%, var(--g-50) 100%);
+  color: var(--ink);
+  font-family: 'Nunito', 'Segoe UI', system-ui, -apple-system, Roboto, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.gulbozor-footer *,
+.gulbozor-footer *::before,
+.gulbozor-footer *::after {
+  box-sizing: border-box;
+}
+
+/* Yumshoq yashil dog'lar (fon) */
+.gulbozor-footer::before,
+.gulbozor-footer::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(70px);
+}
+
+.gulbozor-footer::before {
+  width: 360px;
+  height: 360px;
+  top: -140px;
+  left: -100px;
+  background: rgba(34, 197, 94, 0.16);
+}
+
+.gulbozor-footer::after {
+  width: 320px;
+  height: 320px;
+  top: 40px;
+  right: -120px;
+  background: rgba(21, 128, 61, 0.1);
+}
+
+/* ---------- Asosiy qism ---------- */
+.footer-main-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 24px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.footer-glass {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  padding: 34px;
+  box-shadow: 0 18px 44px -22px rgba(22, 101, 52, 0.28);
+  transition: box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+
+.footer-glass:hover {
+  border-color: #c4e3cf;
+  box-shadow: 0 26px 56px -24px rgba(22, 101, 52, 0.36);
+}
+
+/* ---------- Sarlavha ---------- */
+.section-title {
+  position: relative;
+  margin: 0 0 22px;
+  padding-bottom: 12px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--g-800);
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 34px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--g-500), var(--g-700));
+}
+
+/* ---------- Logo ---------- */
+.footer-logo-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  cursor: default;
+  user-select: none;
+}
+
+.footer-logo-box span {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--g-800);
+}
+
+/* ---------- Ijtimoiy tarmoqlar ---------- */
+.social-icons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+}
+
+.social-icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 72px;
+  text-decoration: none;
+  outline: none;
+}
+
+.icon-circle {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  color: var(--g-700);
+  background: var(--g-50);
+  border: 1.5px solid var(--line);
+  transition:
+    background-color 0.35s var(--ease),
+    color 0.35s var(--ease),
+    border-color 0.35s var(--ease),
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
+}
+
+.social-icon-item:hover .icon-circle,
+.social-icon-item:focus-visible .icon-circle {
+  background: var(--brand, var(--g-600));
+  border-color: var(--brand, var(--g-600));
+  color: #fff;
+  transform: translateY(-4px);
+  box-shadow: 0 14px 22px -10px var(--brand, var(--g-600));
+}
+
+.icon-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  transition: color 0.3s ease;
+}
+
+.social-icon-item:hover .icon-name,
+.social-icon-item:focus-visible .icon-name {
+  color: var(--g-800);
+}
+
+/* ---------- Kategoriyalar ---------- */
+.footer-categories-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.footer-category-btn {
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: var(--g-50);
+  color: var(--g-800);
+  cursor: pointer;
+  outline: none;
+  transition:
+    background-color 0.3s var(--ease),
+    color 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+
+.footer-category-btn:hover,
+.footer-category-btn:focus-visible {
+  background: var(--g-600);
+  border-color: var(--g-600);
+  color: #fff;
+  box-shadow: 0 12px 22px -12px rgba(22, 163, 74, 0.8);
+}
+
+/* "Barchasi" tugmasi toʻq yashil */
+.footer-category-btn:first-child {
+  background: var(--g-700);
+  border-color: var(--g-700);
+  color: #fff;
+}
+
+.footer-category-btn:first-child:hover,
+.footer-category-btn:first-child:focus-visible {
+  background: var(--g-900);
+  border-color: var(--g-900);
+}
+
+/* ---------- Pastki qism ---------- */
+.footer-bottom-bar {
+  position: relative;
+  z-index: 1;
+  margin-top: 56px;
+  border-radius: 36px 36px 0 0;
+  background: linear-gradient(135deg, var(--g-800) 0%, var(--g-900) 100%);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.bottom-bar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.copyright-text {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.center-logo-text {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.developer-box {
+  justify-self: end;
+}
+
+.developer-box span {
+  display: inline-block;
+  padding: 7px 15px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background-color 0.3s ease;
+}
+
+.developer-box span:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ---------- Moslashuvchan (responsive) ---------- */
+@media (max-width: 900px) {
   .footer-main-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 16px;
-    display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 18px;
+    padding-top: 48px;
   }
-  
-  /* Shisha panel */
-  .footer-glass {
-    background: var(--g-glass);
-    border: 1px solid var(--g-border);
-    border-radius: 24px;
-    padding: 24px 20px;
-    -webkit-backdrop-filter: blur(18px) saturate(150%);
-    backdrop-filter: blur(18px) saturate(150%);
-    box-shadow:
-      0 10px 36px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  }
-  
-  .section-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--g-muted);
-    margin: 0 0 18px;
-    text-transform: lowercase;
-    letter-spacing: 0.4px;
-  }
-  
-  /* ═══ Logo ═══ */
-  .footer-logo-box {
-    display: inline-block;
-    margin-bottom: 26px;
-    padding: 12px 24px;
-    cursor: pointer;
-    border-radius: 16px;
-    border: 1px solid rgba(34, 197, 94, 0.55);
-    background: rgba(34, 197, 94, 0.1);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    box-shadow:
-      0 0 22px rgba(34, 197, 94, 0.22),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  }
-  
-  .footer-logo-box span {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 0.4px;
-    color: #4ade80;
-  }
-  
-  /* ═══ Ijtimoiy tarmoq ikonkalari ═══ */
-  .social-icons-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-  }
-  
-  .social-icon-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 64px;
-    text-decoration: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  .icon-circle {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--g-glass-strong);
-    border: 1px solid var(--g-border);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    transition: background 0.25s ease, border-color 0.25s ease,
-                box-shadow 0.25s ease, transform 0.25s ease;
-  }
-  
-  .icon-circle i {
-    font-size: 20px;
-    color: var(--brand);
-    transition: color 0.25s ease;
-  }
-  
-  /* Har bir tarmoq o'z rangida yonadi */
-  .social-icon-item:hover .icon-circle,
-  .social-icon-item:focus-visible .icon-circle {
-    background: var(--brand);
-    border-color: var(--brand);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 22px color-mix(in srgb, var(--brand) 55%, transparent);
-  }
-  
-  .social-icon-item:hover .icon-circle i,
-  .social-icon-item:focus-visible .icon-circle i {
-    color: #fff;
-  }
-  
-  .social-icon-item:focus-visible {
-    outline: none;
-  }
-  
-  .social-icon-item:focus-visible .icon-circle {
-    outline: 2px solid #fff;
-    outline-offset: 3px;
-  }
-  
-  .icon-name {
-    margin-top: 8px;
-    font-size: 11px;
-    color: var(--g-muted);
+
+  .bottom-bar-container {
+    grid-template-columns: minmax(0, 1fr);
     text-align: center;
-  }
-  
-  /* ═══ Kategoriyalar ═══ */
-  .footer-categories-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
-  
-  .footer-category-btn {
-    padding: 11px 14px;
-    border-radius: 14px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 500;
-    text-align: left;
-    line-height: 1.3;
-    word-break: break-word;
-    color: var(--g-text);
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  .footer-category-btn:hover {
-    background: rgba(34, 197, 94, 0.2);
-    border-color: rgba(34, 197, 94, 0.6);
-    color: #fff;
-  }
-  
-  .footer-category-btn:focus-visible {
-    outline: 2px solid var(--g-green);
-    outline-offset: 2px;
-  }
-  
-  /* ═══ Pastki qism ═══ */
-  .footer-bottom-bar {
-    margin-top: 32px;
-    padding: 18px 0;
-    background: rgba(0, 0, 0, 0.35);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-  }
-  
-  .bottom-bar-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .copyright-text {
-    margin: 0;
-    font-size: 12px;
-    color: var(--g-muted);
-    text-align: center;
-  }
-  
-  .center-logo-text {
-    display: none;
-    margin: 0;
-    font-size: 14px;
-    font-weight: 600;
-    color: rgba(74, 222, 128, 0.55);
-  }
-  
+
   .developer-box {
-    padding: 6px 14px;
-    border-radius: 999px;
-    background: var(--g-glass);
-    border: 1px solid var(--g-border);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    justify-self: center;
   }
-  
-  .developer-box span {
-    font-size: 12px;
-    color: var(--g-muted);
+
+  /* Pastki panelda markaziy logo birinchi koʻrinadi */
+  .center-logo-text {
+    order: -1;
   }
-  
-  /* ═══ Planshet ═══ */
-  @media (min-width: 768px) {
-    .footer-main-wrapper { padding: 0 24px; gap: 22px; }
-    .footer-glass { padding: 28px; }
-  
-    .bottom-bar-container {
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 0 24px;
-    }
-  
-    .center-logo-text { display: block; }
+}
+
+@media (max-width: 520px) {
+  .gulbozor-footer {
+    margin-top: 56px;
   }
-  
-  /* ═══ Kompyuter: ikki ustun yonma-yon ═══ */
-  @media (min-width: 992px) {
-    .gulbozor-footer { padding-top: 60px; }
-  
-    .footer-main-wrapper {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      align-items: start;
-    }
+
+  .footer-main-wrapper {
+    padding: 40px 16px 0;
+    gap: 16px;
   }
-  
-  /* ═══ Juda kichik telefonlar ═══ */
-  @media (max-width: 380px) {
-    .footer-glass { padding: 20px 14px; border-radius: 20px; }
-    .footer-categories-grid { grid-template-columns: minmax(0, 1fr); }
-    .social-icons-row { justify-content: space-between; gap: 8px; }
-    .social-icon-item { width: 56px; }
-    .icon-circle { width: 46px; height: 46px; }
+
+  .footer-glass {
+    padding: 24px 20px;
+    border-radius: 24px;
   }
-  
-  /* Brauzer backdrop-filter'ni qo'llamasa, panel o'qilishi uchun to'qroq fon */
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .footer-glass { background: rgba(20, 30, 24, 0.92); }
-    .footer-bottom-bar { background: rgba(0, 0, 0, 0.85); }
+
+  .footer-logo-box span {
+    font-size: 1.55rem;
   }
-  
-  /* Harakatni kamaytirish sozlamasini hurmat qilish */
-  @media (prefers-reduced-motion: reduce) {
-    .icon-circle,
-    .footer-category-btn { transition: none; }
-    .social-icon-item:hover .icon-circle { transform: none; }
+
+  .social-icons-row {
+    justify-content: space-between;
+    gap: 14px 6px;
   }
+
+  .social-icon-item {
+    width: 60px;
+  }
+
+  .icon-circle {
+    width: 50px;
+    height: 50px;
+    font-size: 1.15rem;
+  }
+
+  .footer-category-btn {
+    padding: 10px 16px;
+    font-size: 0.88rem;
+  }
+
+  .footer-bottom-bar {
+    margin-top: 40px;
+    border-radius: 28px 28px 0 0;
+  }
+}
+
+/* Harakatni kamaytirishni tanlagan foydalanuvchilar uchun */
+@media (prefers-reduced-motion: reduce) {
+  .gulbozor-footer *,
+  .gulbozor-footer *::before,
+  .gulbozor-footer *::after {
+    transition-duration: 0.01ms !important;
+  }
+
+  .social-icon-item:hover .icon-circle,
+  .social-icon-item:focus-visible .icon-circle {
+    transform: none;
+  }
+}

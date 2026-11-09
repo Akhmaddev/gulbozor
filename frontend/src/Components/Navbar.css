@@ -1,41 +1,84 @@
-/* Asosiy konteynar */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+/* =========================================================
+   Gulbozor navbar — oq va yashil, yumshoq (smooth) dizayn
+   ========================================================= */
+
 .glass-nav {
+  --g-900: #14532d;
+  --g-800: #166534;
+  --g-700: #15803d;
+  --g-600: #16a34a;
+  --g-500: #22c55e;
+  --g-100: #dcfce7;
+  --g-50: #f0fdf4;
+  --ink: #16301f;
+  --muted: #5b7565;
+  --line: #dcebe1;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: #ffffff;
-  border-bottom: 1px solid #eee;
-  padding: 10px 0;
+  padding: 12px 0;
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid var(--line);
+  font-family: 'Nunito', 'Segoe UI', system-ui, -apple-system, Roboto, Arial, sans-serif;
+  transition: box-shadow 0.4s var(--ease), background-color 0.4s var(--ease), padding 0.4s var(--ease);
+}
+
+.glass-nav *,
+.glass-nav *::before,
+.glass-nav *::after {
+  box-sizing: border-box;
+}
+
+/* Sahifa aylantirilganda */
+.glass-nav.scrolled {
+  padding: 8px 0;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 14px 34px -22px rgba(22, 101, 52, 0.45);
 }
 
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 15px;
-  gap: 20px;
+  gap: 24px;
 }
 
-/* Logo */
+/* ---------- Logo ---------- */
 .logo {
-  font-size: 24px;
-  font-weight: 600;
-  margin-top: 10px;
-  color: #22c55e;
-  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   flex-shrink: 0;
+  font-size: 1.55rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--g-800);
+  text-decoration: none;
+  outline: none;
+  transition: color 0.3s var(--ease), transform 0.3s var(--ease);
 }
 
-.logo span { color: #22c55e; }
+.logo:hover,
+.logo:focus-visible {
+  color: var(--g-600);
+}
 
-/* --- QIDIRUV (MUAMMO SHU YERDA EDI) --- */
+/* ---------- Qidiruv ---------- */
 .search-wrapper {
   position: relative;
   flex: 1;
   max-width: 600px;
-  height: 48px; /* Qat'iy balandlik */
+  height: 50px;
+  margin: 0;
   display: flex;
   align-items: center;
 }
@@ -43,114 +86,278 @@
 .search-input {
   width: 100%;
   height: 100%;
-  padding: 0 60px 0 25px; /* O'ngdan tugma uchun 60px joy */
-  border-radius: 30px;
-  border: 2px solid #f1f5f9;
-  background: #f8fafc;
-  font-size: 15px;
+  padding: 0 96px 0 24px; /* oʻngda tozalash va qidirish tugmalari uchun joy */
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: var(--g-50);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
   outline: none;
-  box-sizing: border-box; /* Padding ichkariga hisoblanadi */
-  transition: 0.2s;
+  transition:
+    border-color 0.3s var(--ease),
+    background-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+
+.search-input::placeholder {
+  color: #86a392;
+  font-weight: 600;
+}
+
+.search-input:hover {
+  border-color: #c4e3cf;
 }
 
 .search-input:focus {
-  border-color: #22c55e;
+  border-color: var(--g-500);
   background: #fff;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16);
 }
 
-/* Lupa tugmasi - MARKAZLASHTIRISH SEHRI */
+/* Lupa tugmasi */
 .search-btn {
   position: absolute;
-  right: 5px; /* Input ichidagi o'ng chekka */
+  right: 6px;
   width: 38px;
   height: 38px;
-  background: #22c55e;
-  border: none;
-  border-radius: 50%;
-  color: white;
-  cursor: pointer;
-  
-  /* Ichidagi lupani markazlash uchun: */
+  padding: 0;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  padding: 0; /* Ortiqcha padding lupani surib yuboradi */
-  margin: 0;
-  font-size: 16px;
-  transition: 0.2s;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--g-500), var(--g-700));
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 8px 16px -8px rgba(21, 128, 61, 0.9);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 
 .search-btn i {
   display: inline-block;
-  line-height: 1; /* Ikonka balandligini to'g'rilaydi */
+  line-height: 1;
 }
 
-.search-btn:hover { background: #16a34a; }
-
-/* Ikonkalar qismi */
-.nav-actions {
-  display: flex;
-  gap: 20px;
-  flex-shrink: 0;
+.search-btn:hover,
+.search-btn:focus-visible {
+  transform: scale(1.08);
+  box-shadow: 0 12px 20px -8px rgba(21, 128, 61, 0.95);
 }
 
-.action-link {
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #64748b;
+.search-btn:active {
+  transform: scale(0.95);
 }
 
-.icon-box {
-  width: 44px;
-  height: 44px;
-  background: #f1f5f9;
-  border-radius: 12px;
+/* Tozalash (×) tugmasi */
+.search-clear {
+  position: absolute;
+  right: 52px;
+  width: 26px;
+  height: 26px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--g-100);
+  color: var(--g-800);
+  font-family: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  outline: none;
+  animation: nav-pop 0.3s var(--ease);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.search-clear:hover,
+.search-clear:focus-visible {
+  background: var(--g-600);
+  color: #fff;
+}
+
+/* ---------- Oʻng tomon: harakatlar ---------- */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.nav-lang {
+  display: flex;
+  align-items: center;
+}
+
+.action-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: var(--muted);
+  text-decoration: none;
+  outline: none;
+}
+
+.icon-box {
   position: relative;
-  margin-bottom: 2px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: var(--g-50);
+  border: 1.5px solid var(--line);
+  transition:
+    background-color 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
 }
 
 .nav-custom-icon {
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   border-radius: 9px;
   object-fit: contain;
 }
 
 .link-label {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 800;
+  transition: color 0.3s ease;
 }
 
+.action-link:hover .icon-box,
+.action-link:focus-visible .icon-box {
+  background: var(--g-100);
+  border-color: #b7dfc5;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 22px -12px rgba(22, 163, 74, 0.8);
+}
+
+.action-link:hover .link-label,
+.action-link:focus-visible .link-label {
+  color: var(--g-800);
+}
+
+/* Hozirgi sahifa */
+.action-link.active .icon-box {
+  background: var(--g-100);
+  border-color: var(--g-500);
+}
+
+.action-link.active .link-label {
+  color: var(--g-700);
+}
+
+/* Savat soni */
 .badge {
   position: absolute;
-  top: -5px;
-  right: -5px;
-  background: #ef4444;
-  color: white;
-  font-size: 10px;
-  
-  padding: 2px 6px;
-  border-radius: 10px;
-  border: 2px solid white;
+  top: -7px;
+  right: -7px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  background: linear-gradient(135deg, var(--g-500), var(--g-700));
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 6px 12px -6px rgba(21, 128, 61, 0.9);
+  animation: nav-pop 0.4s var(--ease);
 }
 
-/* --- RESPONSIVE (TELEFON UCHUN) --- */
+@keyframes nav-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ---------- Moslashuvchan (telefon / planshet) ---------- */
 @media (max-width: 768px) {
+  .glass-nav,
+  .glass-nav.scrolled {
+    padding: 10px 0;
+  }
+
   .nav-container {
-      flex-wrap: wrap;
-      padding: 10px;
+    flex-wrap: wrap;
+    padding: 0 14px;
+    gap: 12px;
   }
+
+  .logo {
+    font-size: 1.3rem;
+  }
+
+  .nav-actions {
+    gap: 10px;
+  }
+
   .search-wrapper {
-      order: 3; /* Qidiruvni pastga tushiradi */
-      flex: 0 0 100%;
-      margin-top: 10px;
+    order: 3; /* qidiruv pastga tushadi */
+    flex: 0 0 100%;
+    max-width: none;
+    height: 46px;
   }
-  .link-label { display: none; } /* Telefonda matnni yashirish */
-  .logo { font-size: 20px; }
+
+  .link-label {
+    display: none; /* telefonda matn yashiriladi */
+  }
+
+  .icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  .nav-custom-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 380px) {
+  .logo {
+    font-size: 1.15rem;
+    gap: 8px;
+  }
+
+  .nav-actions {
+    gap: 8px;
+  }
+
+  .icon-box {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Harakatni kamaytirishni tanlagan foydalanuvchilar uchun */
+@media (prefers-reduced-motion: reduce) {
+  .glass-nav,
+  .glass-nav *,
+  .glass-nav *::before,
+  .glass-nav *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

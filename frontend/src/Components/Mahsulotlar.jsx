@@ -37,6 +37,47 @@ const StarInput = ({ value, onChange }) => {
   );
 };
 
+/* ---------- Gullarni yuklash yordamchilari ---------- */
+
+// Turli backend formatlaridan massivni ajratib oladi
+const toList = (data) => {
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.items)) return data.items;
+  if (data && Array.isArray(data.data)) return data.data;
+  return [];
+};
+
+// Bitta URL boʻyicha BARCHA sahifalarni yuklaydi.
+// Backend sahifalab (masalan 20 tadan) qaytarsa ham hammasi olinadi.
+// Backend `page` ni eʼtiborsiz qoldirsa — yangi gul chiqmaydi va tsikl toʻxtaydi.
+async function fetchAllPages(url) {
+  const seen = new Set();
+  const all = [];
+  const sep = url.includes("?") ? "&" : "?";
+
+  for (let page = 1; page <= 50; page++) {
+    let list;
+    try {
+      const res = await axios.get(`${url}${sep}page=${page}&per-page=200`);
+      list = toList(res.data);
+    } catch (err) {
+      if (page === 1) throw err; // birinchi sahifa xato — butunlay xato
+      break; // keyingi sahifa xato — olinganlarini qoldiramiz
+    }
+
+    let added = 0;
+    list.forEach((g) => {
+      if (!seen.has(g.id)) {
+        seen.add(g.id);
+        all.push(g);
+        added++;
+      }
+    });
+    if (list.length === 0 || added === 0) break;
+  }
+  return all;
+}
+
 /* ---------- Izohlar API (backend boʻlmasa brauzerda saqlanadi) ---------- */
 const localKey = (id) => `izohlar_${id}`;
 const getLocal = (id) => {
@@ -101,22 +142,36 @@ const Mahsulotlar = ({ categoryId, categoryIds, searchTerm, categories }) => {
       ? String(categoryId)
       : "";
 
-  // Mahsulotlarni yuklash (bir nechta kategoriya bo'lsa — birlashtiriladi)
+  // Barcha kategoriyalar kaliti (massiv har renderda yangilansa ham effekt qayta ishlamasligi uchun)
+  const catKey = Array.isArray(categories)
+    ? categories.filter((c) => c && c.id).map((c) => c.id).join(",")
+    : "";
+
+  // Mahsulotlarni yuklash
   useEffect(() => {
     let cancelled = false;
     setIsRefreshing(true);
 
     const base = `${API}/gullar?q=${encodeURIComponent(searchTerm || "")}`;
-    const ids = !searchTerm && idsKey ? idsKey.split(",") : [null];
+    const allCatIds = catKey ? catKey.split(",") : [];
+    const selected = idsKey ? idsKey.split(",") : [];
 
-    Promise.all(
-      ids.map((id) =>
-        axios
-          .get(id ? `${base}&kategoriya_id=${id}` : base)
-          .then((res) => (Array.isArray(res.data) ? res.data : []))
-          .catch(() => null) // xato bo'lsa null qaytaradi
-      )
-    ).then((results) => {
+    // "Hammasi": hech narsa tanlanmagan yoki hamma kategoriya tanlangan
+    const coversAll = allCatIds.length > 0 && allCatIds.every((id) => selected.includes(id));
+    const isAll = !searchTerm && (selected.length === 0 || coversAll);
+
+    let urls;
+    if (searchTerm) {
+      urls = [base]; // qidiruv — kategoriyasiz
+    } else if (isAll) {
+      // Avval filtrsiz (kategoriyasi yoʻq gullar ham chiqadi),
+      // keyin har bir kategoriya boʻyicha — natijalar birlashtiriladi
+      urls = [base, ...allCatIds.map((id) => `${base}&kategoriya_id=${id}`)];
+    } else {
+      urls = selected.map((id) => `${base}&kategoriya_id=${id}`);
+    }
+
+    Promise.all(urls.map((u) => fetchAllPages(u).catch(() => null))).then((results) => {
       if (cancelled) return;
 
       // Hamma so'rovlar xato bo'lsa — eski ro'yxat qoladi
@@ -144,7 +199,7 @@ const Mahsulotlar = ({ categoryId, categoryIds, searchTerm, categories }) => {
     return () => {
       cancelled = true;
     };
-  }, [idsKey, searchTerm]);
+  }, [idsKey, catKey, searchTerm]);
 
   // Saqlangan ismni olish
   useEffect(() => {

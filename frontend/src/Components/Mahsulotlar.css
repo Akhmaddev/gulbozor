@@ -323,3 +323,4 @@
 @media (prefers-reduced-motion: reduce) {
   .catalog-section *, .modal-overlay, .modal-card { animation: none !important; transition: none !important; }
 }
+
