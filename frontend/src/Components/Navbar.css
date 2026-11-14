@@ -2,6 +2,7 @@
 
 /* =========================================================
    Gulbozor navbar — oq va yashil, yumshoq (smooth) dizayn
+   Klass nomlari Navbar.jsx bilan bir xil: glass-nav, logo, ...
    ========================================================= */
 
 .glass-nav {
@@ -20,6 +21,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
   padding: 12px 0;
   background: rgba(255, 255, 255, 0.86);
   -webkit-backdrop-filter: saturate(180%) blur(16px);
@@ -43,6 +45,7 @@
 }
 
 .nav-container {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
@@ -52,30 +55,72 @@
   gap: 24px;
 }
 
-/* ---------- Logo ---------- */
+/* =========================================================
+   LOGO: chapda rasm, oʻng tomonida "Gulbozor" yozuvi
+   ========================================================= */
 .logo {
   display: inline-flex;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
-  font-size: 1.55rem;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--g-800);
   text-decoration: none;
   outline: none;
-  transition: color 0.3s var(--ease), transform 0.3s var(--ease);
+  -webkit-tap-highlight-color: transparent;
 }
 
-.logo:hover,
-.logo:focus-visible {
+.logo:link,
+.logo:visited {
+  text-decoration: none;
+}
+
+.logo-img {
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 28%;
+  object-fit: contain;
+  box-shadow: 0 6px 14px -8px rgba(21, 128, 61, 0.5);
+  transition:
+    transform 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
+}
+
+.logo-text {
+  font-size: 1.55rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--g-800);
+  transition: color 0.3s var(--ease);
+}
+
+/* Sichqoncha logoga borganda: yanada yashil soya */
+.logo:hover .logo-img,
+.logo:focus-visible .logo-img {
+  transform: translateY(-2px) rotate(-6deg) scale(1.08);
+  box-shadow:
+    0 0 0 4px rgba(34, 197, 94, 0.22),
+    0 16px 30px -6px rgba(22, 163, 74, 0.95),
+    0 0 26px rgba(34, 197, 94, 0.55);
+}
+
+.logo:hover .logo-text,
+.logo:focus-visible .logo-text {
   color: var(--g-600);
+}
+
+.logo:active .logo-img {
+  transform: scale(0.96);
 }
 
 /* ---------- Qidiruv ---------- */
 .search-wrapper {
   position: relative;
   flex: 1;
+  min-width: 0;
   max-width: 600px;
   height: 50px;
   margin: 0;
@@ -95,6 +140,7 @@
   font-size: 0.95rem;
   font-weight: 600;
   outline: none;
+  text-overflow: ellipsis;
   transition:
     border-color 0.3s var(--ease),
     background-color 0.3s var(--ease),
@@ -190,11 +236,6 @@
   flex-shrink: 0;
 }
 
-.nav-lang {
-  display: flex;
-  align-items: center;
-}
-
 .action-link {
   display: flex;
   flex-direction: column;
@@ -203,6 +244,7 @@
   color: var(--muted);
   text-decoration: none;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .icon-box {
@@ -232,6 +274,7 @@
 .link-label {
   font-size: 0.72rem;
   font-weight: 800;
+  white-space: nowrap;
   transition: color 0.3s ease;
 }
 
@@ -291,7 +334,126 @@
   }
 }
 
-/* ---------- Moslashuvchan (telefon / planshet) ---------- */
+/* =========================================================
+   ROʻYXATDAN OʻTISH TUGMASI (rasm + yozuv)
+   ========================================================= */
+.register-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  height: 48px;
+  padding: 0 20px 0 6px;
+  margin: 0;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--g-500), var(--g-700));
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 12px 22px -12px rgba(21, 128, 61, 0.95);
+  transition:
+    transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease),
+    filter 0.3s var(--ease);
+}
+
+/* Rasm uchun oq doira: istalgan rangdagi png yaxshi koʻrinadi */
+.register-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(21, 128, 61, 0.12);
+  transition: transform 0.35s var(--ease);
+}
+
+.register-icon img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.register-btn:hover,
+.register-btn:focus-visible {
+  transform: translateY(-2px);
+  filter: saturate(1.1);
+  box-shadow:
+    0 0 0 4px rgba(34, 197, 94, 0.2),
+    0 16px 28px -10px rgba(21, 128, 61, 0.95);
+}
+
+.register-btn:hover .register-icon,
+.register-btn:focus-visible .register-icon {
+  transform: rotate(-8deg) scale(1.06);
+}
+
+.register-btn:active {
+  transform: scale(0.96);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+/* Katta ekranlar */
+@media (min-width: 1400px) {
+  .nav-container {
+    max-width: 1320px;
+  }
+}
+
+/* Noutbuk / kichik desktop */
+@media (max-width: 1024px) {
+  .nav-container {
+    gap: 16px;
+  }
+
+  .search-wrapper {
+    max-width: 440px;
+  }
+
+  .nav-actions {
+    gap: 12px;
+  }
+
+  .register-btn {
+    padding-right: 16px;
+    font-size: 0.88rem;
+  }
+}
+
+/* Roʻyxatdan oʻtish: faqat rasm koʻrinadi */
+@media (max-width: 860px) {
+  .register-btn {
+    width: 48px;
+    padding: 5px;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .register-text {
+    display: none;
+  }
+
+  .register-icon {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Planshet va telefon: qidiruv pastga tushadi */
 @media (max-width: 768px) {
   .glass-nav,
   .glass-nav.scrolled {
@@ -305,7 +467,16 @@
   }
 
   .logo {
-    font-size: 1.3rem;
+    gap: 9px;
+  }
+
+  .logo-img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .logo-text {
+    font-size: 1.35rem;
   }
 
   .nav-actions {
@@ -313,10 +484,24 @@
   }
 
   .search-wrapper {
-    order: 3; /* qidiruv pastga tushadi */
+    order: 3;
     flex: 0 0 100%;
     max-width: none;
     height: 46px;
+  }
+
+  .search-input {
+    font-size: 0.92rem;
+    padding-left: 20px;
+  }
+
+  .search-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .search-clear {
+    right: 48px;
   }
 
   .link-label {
@@ -333,12 +518,31 @@
     width: 30px;
     height: 30px;
   }
+
+  .register-btn {
+    width: 44px;
+    height: 44px;
+  }
 }
 
-@media (max-width: 380px) {
+/* Oddiy telefonlar */
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 0 12px;
+    gap: 10px;
+  }
+
   .logo {
-    font-size: 1.15rem;
     gap: 8px;
+  }
+
+  .logo-img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .logo-text {
+    font-size: 1.25rem;
   }
 
   .nav-actions {
@@ -346,8 +550,140 @@
   }
 
   .icon-box {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+  }
+
+  .nav-custom-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .register-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .register-icon img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .badge {
+    top: -6px;
+    right: -6px;
+    min-width: 20px;
+    height: 20px;
+    font-size: 0.64rem;
+  }
+}
+
+/* Juda kichik telefonlar */
+@media (max-width: 380px) {
+  .nav-container {
+    padding: 0 10px;
+  }
+
+  .logo {
+    gap: 7px;
+  }
+
+  .logo-img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .logo-text {
+    font-size: 1.1rem;
+  }
+
+  .nav-actions {
+    gap: 6px;
+  }
+
+  .icon-box {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+  }
+
+  .nav-custom-icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  .register-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .register-icon img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .search-wrapper {
+    height: 44px;
+  }
+
+  .search-input {
+    font-size: 0.88rem;
+  }
+}
+
+/* Eng kichik ekranlar (340px va undan past) */
+@media (max-width: 340px) {
+  .logo-img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .logo-text {
+    font-size: 1rem;
+  }
+
+  .nav-actions {
+    gap: 5px;
+  }
+
+  .icon-box,
+  .register-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .nav-custom-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* Sensorli qurilmalarda hover effektlari "yopishib" qolmasligi uchun */
+@media (hover: none) {
+  .logo:hover .logo-img {
+    transform: none;
+    box-shadow: 0 6px 14px -8px rgba(21, 128, 61, 0.5);
+  }
+
+  .logo:hover .logo-text {
+    color: var(--g-800);
+  }
+
+  .logo:active .logo-img {
+    transform: scale(0.94);
+    box-shadow:
+      0 0 0 4px rgba(34, 197, 94, 0.22),
+      0 14px 26px -6px rgba(22, 163, 74, 0.9);
+  }
+
+  .register-btn:hover {
+    transform: none;
+    box-shadow: 0 12px 22px -12px rgba(21, 128, 61, 0.95);
+  }
+
+  .register-btn:hover .register-icon {
+    transform: none;
   }
 }
 

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
-import Til from '../Components/Languageswitcher';
+import RegisterModal from '../Components/RegisterModal';
 
+import logo from '../assets/logo.png';
 import savatIcon from '../assets/savat.png';
 import yordamchiIcon from '../assets/yordamchi.png';
+import royxatIcon from '../assets/royxat.png'; // user png rasmi
 
 // Savatdagi jami mahsulotlar sonini localStorage'dan oʻqish
 const readCartCount = () => {
@@ -22,6 +24,7 @@ const Navbar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [showRegister, setShowRegister] = useState(false); // roʻyxatdan oʻtish oynasi
   const { pathname } = useLocation();
 
   // Sahifa aylantirilganda navbar ostida yumshoq soya paydo boʻladi
@@ -65,9 +68,10 @@ const Navbar = ({ onSearch }) => {
   return (
     <nav className={`glass-nav ${scrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
-        {/* Logo */}
+        {/* Logo: chapda rasm, oʻng tomonida "Gulbozor" yozuvi */}
         <Link to="/" className="logo" aria-label="Gulbozor — bosh sahifa">
-          Gulbozor
+          <img src={logo} alt="" className="logo-img" />
+          <span className="logo-text">Gulbozor</span>
         </Link>
 
         {/* Qidiruv */}
@@ -98,7 +102,7 @@ const Navbar = ({ onSearch }) => {
           </button>
         </form>
 
-        {/* Savat, yordamchi, til */}
+        {/* Savat, yordamchi, roʻyxatdan oʻtish */}
         <div className="nav-actions">
           <Link
             to="/savat"
@@ -127,11 +131,25 @@ const Navbar = ({ onSearch }) => {
             <span className="link-label">Yordamchi</span>
           </Link>
 
-          <div className="nav-lang">
-            <Til />
-          </div>
+          {/* Roʻyxatdan oʻtish tugmasi */}
+          <button
+            type="button"
+            className="register-btn"
+            onClick={() => setShowRegister(true)}
+            aria-haspopup="dialog"
+            aria-expanded={showRegister}
+            aria-label="Roʻyxatdan oʻtish"
+          >
+            <span className="register-icon">
+              <img src={royxatIcon} alt="" />
+            </span>
+            <span className="register-text">Roʻyxatdan oʻtish</span>
+          </button>
         </div>
       </div>
+
+      {/* Roʻyxatdan oʻtish oynasi (Components/RegisterModal.jsx) */}
+      <RegisterModal open={showRegister} onClose={() => setShowRegister(false)} />
     </nav>
   );
 };
