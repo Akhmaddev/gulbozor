@@ -6,6 +6,7 @@ use common\models\Gullar;
 use common\models\GullarSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 
 /**
@@ -22,7 +23,7 @@ class GullarController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -61,7 +62,7 @@ class GullarController extends Controller
     }
 
     /**
-     * Creates a new Gullar model.
+     * Creates a new Gullar model (rasm yuklash bilan).
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
@@ -70,7 +71,10 @@ class GullarController extends Controller
         $model = new Gullar();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            $model->load($this->request->post());
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
+            if ($model->validate() && $model->upload() && $model->save(false)) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -83,8 +87,8 @@ class GullarController extends Controller
     }
 
     /**
-     * Updates an existing Gullar model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Updates an existing Gullar model (rasm yuklash bilan).
+     * Yangi rasm tanlanmasa, eski rasm saqlanib qoladi.
      * @param int $id ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
@@ -93,8 +97,13 @@ class GullarController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost) {
+            $model->load($this->request->post());
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
+            if ($model->validate() && $model->upload() && $model->save(false)) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
@@ -104,7 +113,7 @@ class GullarController extends Controller
 
     /**
      * Deletes an existing Gullar model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Gul bilan birga uning rasm fayli ham o'chadi (modeldagi afterDelete).
      * @param int $id ID
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found

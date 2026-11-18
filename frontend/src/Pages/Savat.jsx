@@ -5,11 +5,32 @@ import emptyCartImg from "../assets/hmm.png"; // O'zingiz qo'yadigan rasm yo'li
 const Savat = () => {
   const [cartItems, setCartItems] = useState([]);
 
+  // Mahsulotning maksimal soni (ombordagi qoldiq). Yo'q bo'lsa — cheklanmagan
+  const getMaxSon = (item) => {
+    const max = Number(item.maxSoni);
+    return max > 0 ? max : Infinity;
+  };
+
   // LocalStorage dan savat ma'lumotlarini yuklash
   const loadCart = () => {
     try {
       const savatData = JSON.parse(localStorage.getItem("savat"));
-      setCartItems(Array.isArray(savatData) ? savatData : []);
+      const list = Array.isArray(savatData) ? savatData : [];
+
+      // Agar savatdagi miqdor zaxiradan oshib ketgan bo'lsa, zaxiraga tenglaymiz
+      const fixed = list.map((item) => {
+        const maxSon = getMaxSon(item);
+        if (item.miqdori > maxSon) {
+          return {
+            ...item,
+            miqdori: maxSon,
+            jamiNarxi: maxSon * Number(item.narxi),
+          };
+        }
+        return item;
+      });
+
+      setCartItems(fixed);
     } catch (error) {
       console.error("Savatni o'qishda xatolik:", error);
       setCartItems([]);
@@ -29,6 +50,14 @@ const Savat = () => {
   const handleIncrement = (id) => {
     const updatedCart = cartItems.map((item) => {
       if (item.id === id) {
+        const maxSon = getMaxSon(item);
+
+        // Zaxiradan oshib ketmasligi uchun tekshiruv
+        if (item.miqdori >= maxSon) {
+          alert(`Omborda faqat ${maxSon} ta mavjud`);
+          return item;
+        }
+
         const yangiMiqdor = item.miqdori + 1;
         return {
           ...item,
@@ -89,54 +118,68 @@ const Savat = () => {
           <div className="savat-wrapper">
             {/* MAHSULOTLAR GRID QISMI */}
             <div className="savat-products-grid">
-              {cartItems.map((item) => (
-                <div className="savat-card" key={item.id}>
-                  {/* Chap tomondagi kvadrat rasm */}
-                  <div className="savat-card-img">
-                    <img
-                      src={`http://gulbozor.loc/frontend/web/images/${item.rasmi}`}
-                      alt={item.nomi}
-                      onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/100?text=Gul";
-                      }}
-                    />
-                  </div>
+              {cartItems.map((item) => {
+                const limitgaYetdi = item.miqdori >= getMaxSon(item);
 
-                  {/* O'ng tomondagi ma'lumotlar paneli */}
-                  <div className="savat-card-info">
-                    <div className="savat-card-header">
-                      <h3 className="savat-item-name">{item.nomi}</h3>
-                      <button
-                        className="savat-item-remove-btn"
-                        onClick={() => handleRemoveItem(item.id)}
-                      >
-                        &times;
-                      </button>
+                return (
+                  <div className="savat-card" key={item.id}>
+                    {/* Chap tomondagi kvadrat rasm */}
+                    <div className="savat-card-img">
+                      <img
+                        src={`http://gulbozor.loc/frontend/web/images/${item.rasmi}`}
+                        alt={item.nomi}
+                        onError={(e) => {
+                          e.target.src =
+                            "https://via.placeholder.com/100?text=Gul";
+                        }}
+                      />
                     </div>
 
-                    <p className="savat-item-price">
-                      {Number(item.narxi).toLocaleString()} UZS
-                    </p>
+                    {/* O'ng tomondagi ma'lumotlar paneli */}
+                    <div className="savat-card-info">
+                      <div className="savat-card-header">
+                        <h3 className="savat-item-name">{item.nomi}</h3>
+                        <button
+                          className="savat-item-remove-btn"
+                          onClick={() => handleRemoveItem(item.id)}
+                        >
+                          &times;
+                        </button>
+                      </div>
 
-                    {/* Boshqaruv paneli: [+] soni X [-] */}
-                    <div className="savat-counter-box">
-                      <button
-                        className="savat-cnt-btn plus"
-                        onClick={() => handleIncrement(item.id)}
-                      >
-                        +
-                      </button>
-                      <span className="savat-cnt-text">soni: {item.miqdori}</span>
-                      <button
-                        className="savat-cnt-btn minus"
-                        onClick={() => handleDecrement(item.id)}
-                      >
-                        &minus;
-                      </button>
+                      <p className="savat-item-price">
+                        {Number(item.narxi).toLocaleString()} UZS
+                      </p>
+
+                      {/* Boshqaruv paneli: [+] soni X [-] */}
+                      <div className="savat-counter-box">
+                        <button
+                          className="savat-cnt-btn plus"
+                          onClick={() => handleIncrement(item.id)}
+                          disabled={limitgaYetdi}
+                          title={
+                            limitgaYetdi
+                              ? `Omborda faqat ${item.maxSoni} ta mavjud`
+                              : ""
+                          }
+                        >
+                          +
+                        </button>
+                        <span className="savat-cnt-text">
+                          soni: {item.miqdori}
+                          {item.maxSoni ? ` / ${item.maxSoni}` : ""}
+                        </span>
+                        <button
+                          className="savat-cnt-btn minus"
+                          onClick={() => handleDecrement(item.id)}
+                        >
+                          &minus;
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* JAMI SUMMA VA XARID QILISH OYNASI */}

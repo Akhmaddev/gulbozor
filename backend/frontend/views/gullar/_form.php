@@ -5,14 +5,16 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\models\Kategoriya;
 
-/**  @var yii\web\View $this */
-/**  @var common\models\Gullar $model */
+/** @var yii\web\View $this */
+/** @var common\models\Gullar $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
 <div class="gullar-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'], // fayl yuborish uchun shart
+    ]); ?>
 
     <?= $form->field($model, 'gulnomi')->textInput(['maxlength' => true]) ?>
 
@@ -27,7 +29,16 @@ use common\models\Kategoriya;
 
     <?= $form->field($model, 'gulmalumoti')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'gulrasmi')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'imageFile')->fileInput(['accept' => 'image/*'])->label('Gul rasmi') ?>
+
+    <?php if (!$model->isNewRecord && $model->gulrasmi): ?>
+        <div class="form-group">
+            <p>Hozirgi rasm (yangi rasm tanlamasangiz, shu qoladi):</p>
+            <?= Html::img('@web/images/' . $model->gulrasmi, [
+                'style' => 'max-width:150px; border-radius:8px;',
+            ]) ?>
+        </div>
+    <?php endif; ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

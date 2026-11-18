@@ -256,39 +256,52 @@ const Mahsulotlar = ({ categoryId, categoryIds, searchTerm, categories }) => {
   };
 
   // SAVATGA QOʻSHISH
-  const handleAddToCart = () => {
-    if (!selectedGul || Number(selectedGul.soni) === 0) {
-      showToast("Kechirasiz, ushbu mahsulot omborda qolmagan.");
+  // SAVATGA QOʻSHISH
+const handleAddToCart = () => {
+  if (!selectedGul || Number(selectedGul.soni) === 0) {
+    showToast("Kechirasiz, ushbu mahsulot omborda qolmagan.");
+    return;
+  }
+
+  const maxSoni = Number(selectedGul.soni); // bazadagi qoldiq
+
+  const cartItem = {
+    id: selectedGul.id,
+    nomi: selectedGul.gulnomi,
+    narxi: selectedGul.gulnarxi,
+    rasmi: selectedGul.gulrasmi,
+    miqdori: count,
+    jamiNarxi: count * Number(selectedGul.gulnarxi),
+    maxSoni: maxSoni, // <-- SHU QATOR QO'SHILDI
+  };
+
+  let currentCart = [];
+  try {
+    const data = JSON.parse(localStorage.getItem("savat"));
+    currentCart = Array.isArray(data) ? data : [];
+  } catch {
+    currentCart = [];
+  }
+
+  const idx = currentCart.findIndex((item) => item.id === cartItem.id);
+  if (idx > -1) {
+    const yangi = currentCart[idx].miqdori + count;
+    if (yangi > maxSoni) {
+      showToast(`Omborda jami ${maxSoni} dona bor. Savatda ${currentCart[idx].miqdori} dona mavjud.`);
       return;
     }
-    const cartItem = {
-      id: selectedGul.id,
-      nomi: selectedGul.gulnomi,
-      narxi: selectedGul.gulnarxi,
-      rasmi: selectedGul.gulrasmi,
-      miqdori: count,
-      jamiNarxi: count * Number(selectedGul.gulnarxi),
-    };
+    currentCart[idx].miqdori = yangi;
+    currentCart[idx].jamiNarxi = yangi * Number(selectedGul.gulnarxi);
+    currentCart[idx].maxSoni = maxSoni; // <-- SHU QATOR QO'SHILDI (zaxira yangilanadi)
+  } else {
+    currentCart.push(cartItem);
+  }
 
-    let currentCart = JSON.parse(localStorage.getItem("savat")) || [];
-    const idx = currentCart.findIndex((item) => item.id === cartItem.id);
-    if (idx > -1) {
-      const yangi = currentCart[idx].miqdori + count;
-      if (yangi > Number(selectedGul.soni)) {
-        showToast(`Omborda jami ${selectedGul.soni} dona bor. Savatda ${currentCart[idx].miqdori} dona mavjud.`);
-        return;
-      }
-      currentCart[idx].miqdori = yangi;
-      currentCart[idx].jamiNarxi = yangi * Number(selectedGul.gulnarxi);
-    } else {
-      currentCart.push(cartItem);
-    }
-
-    localStorage.setItem("savat", JSON.stringify(currentCart));
-    window.dispatchEvent(new Event("cartUpdated"));
-    showToast(`${selectedGul.gulnomi} savatga qoʻshildi! 🌿`);
-    setSelectedGul(null);
-  };
+  localStorage.setItem("savat", JSON.stringify(currentCart));
+  window.dispatchEvent(new Event("cartUpdated"));
+  showToast(`${selectedGul.gulnomi} savatga qoʻshildi! 🌿`);
+  setSelectedGul(null);
+};
 
   // IZOH YUBORISH
   const submitIzoh = async (e) => {

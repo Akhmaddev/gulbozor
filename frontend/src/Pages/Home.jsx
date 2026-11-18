@@ -4,24 +4,30 @@ import Mahsulotlar from '../Components/Mahsulotlar';
 import Carusel from '../Components/Carusel';
 import Afzalliklar from '../Components/Afzalliklar';
 
-// searchTerm-ni prop sifatida qabul qilamiz
 const Home = ({ searchTerm }) => {
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
+    // Foydalanuvchi qidiryaptimi? (faqat bo'sh joy yozilsa qidiruv hisoblanmaydi)
+    const isSearching = (searchTerm || '').trim() !== '';
+
     return (
         <div>
-            <Carusel />
-            <Afzalliklar />
-            <CategorySwiper 
-                onSelectCategory={(id) => setSelectedCategoryId(id)} 
+            {/* Qidiruv paytida karusel va afzalliklar yashiriladi */}
+            {!isSearching && <Carusel />}
+            {!isSearching && <Afzalliklar />}
+
+            {/* Kategoriya doim ko'rinib turadi */}
+            <CategorySwiper
+                onSelectCategory={(id) => setSelectedCategoryId(id)}
             />
-            
-            <Mahsulotlar 
-                categoryId={selectedCategoryId} 
-                searchTerm={searchTerm} 
-            /> 
+
+            {/* Mahsulotlar kategoriya tagida chiqadi */}
+            <Mahsulotlar
+                categoryId={selectedCategoryId}
+                searchTerm={(searchTerm || '').trim()}
+            />
         </div>
     );
-}
+};
 
 export default Home;
