@@ -22,10 +22,15 @@ return [
             ]
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
-        ],
+    'identityClass' => 'common\models\User',
+    'enableAutoLogin' => true,
+    'enableSession' => true,
+    'loginUrl' => ['site/login'],
+    'identityCookie' => [
+        'name' => '_identity-backend',
+        'httpOnly' => true,
+    ],
+],
         'session' => [
             // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
