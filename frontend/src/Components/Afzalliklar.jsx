@@ -20,7 +20,7 @@ const ITEMS = [
   { id: 1, title: "Tez yetkazib berish", text: "Butun Oʻzbekiston boʻylab", icon: yetkazish,  },
   { id: 2, title: "Xavfsiz toʻlov", text: "100% ishonchli buyurtma", icon: tolov, },
   { id: 3, title: "Oson almashtirish", text: "Muammo boʻlsa, almashtirib beramiz", icon: almashtirish,  },
-  { id: 4, title: "24/7 yordam", text: "Savollaringiz uchun yordamchi ai bor", icon: yordam,  },
+  { id: 4, title: "24/7 yordam", text: "Savollaringiz uchun Yordamchi Ai tayyor", icon: yordam,  },
 ];
 
 export default function Afzalliklar({ items = ITEMS }) {

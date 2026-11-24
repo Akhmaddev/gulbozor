@@ -132,11 +132,11 @@ const Footer = () => {
       <div className="footer-bottom-bar">
         <div className="bottom-bar-container">
           <p className="copyright-text">
-            © {new Date().getFullYear()} gulbozor.uz. Barcha huquqlar himoyalangan
+            © {new Date().getFullYear()} gulbozor.uz Barcha huquqlar himoyalangan
           </p>
           <p className="center-logo-text">gulbozor uz</p>
           <div className="developer-box">
-            <span>powered by Akhmaddev</span>
+            <span>Powered by Akhmaddev</span>
           </div>
         </div>
       </div>
