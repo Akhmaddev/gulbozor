@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./Afzalliklar.css";
 
 /*
-  RASMLAR: oʻzingizning ikonkalaringizni  src/assets/afzallik/  papkasiga qoʻying
-  (kvadrat PNG yoki SVG, taxminan 64×64, bir xil yashil rangda boʻlsa chiroyli chiqadi).
+  RASMLAR: oʻzingizning ikonkalaringizni  src/assets/afzallik/  papkasiga joylashtiring
+  (kvadrat PNG yoki SVG, taxminan 64×64, bir xil yashil rangda boʻlsa chiroyli chiqadi degan umiddaman).
 
   Rasmlar tayyor boʻlgach:
    1) quyidagi 4 ta import qatoridagi  //  belgisini olib tashlang,
@@ -20,7 +20,7 @@ const ITEMS = [
   { id: 1, title: "Tez yetkazib berish", text: "Butun Oʻzbekiston boʻylab", icon: yetkazish,  },
   { id: 2, title: "Xavfsiz toʻlov", text: "100% ishonchli buyurtma", icon: tolov, },
   { id: 3, title: "Oson almashtirish", text: "Muammo boʻlsa, almashtirib beramiz", icon: almashtirish,  },
-  { id: 4, title: "24/7 yordam", text: "Savollaringiz uchun Yordamchi Ai tayyor", icon: yordam,  },
+  { id: 4, title: "24/7 yordam", text: "Savollaringiz uchun Yordamchi-Ai tayyor", icon: yordam,  },
 ];
 
 export default function Afzalliklar({ items = ITEMS }) {
