@@ -40,7 +40,7 @@ const Footer = () => {
     };
   }, []);
 
-  // Kategoriya bosilganda Home sahifasiga oʻtkazish
+  // Kategoriya bosilganda Home <- sahifasiga oʻtkazish
   const handleCategoryClick = (id) => {
     if (id === null) {
       navigate('/');
@@ -53,7 +53,7 @@ const Footer = () => {
   return (
     <footer className="gulbozor-footer">
       <div className="footer-main-wrapper">
-        {/* --- CHAP: LOGO VA IJTIMOIY TARMOQLAR --- */}
+        {/* --- CHAP: logo va ijtimoiy tarmoqlar --- */}
         <motion.div className="footer-left-block footer-glass" {...fadeUp}>
           <motion.div
             className="footer-logo-box"
@@ -94,7 +94,7 @@ const Footer = () => {
           </div>
         </motion.div>
 
-        {/* --- OʻNG: KATEGORIYALAR --- */}
+        {/* --- OʻNG: Kategoriyalar --- */}
         <motion.div
           className="footer-right-block footer-glass"
           {...fadeUp}
@@ -132,11 +132,11 @@ const Footer = () => {
       <div className="footer-bottom-bar">
         <div className="bottom-bar-container">
           <p className="copyright-text">
-            © {new Date().getFullYear()} gulbozor.uz Barcha huquqlar himoyalangan
+            © {new Date().getFullYear()} gulbozor uz Barcha huquqlar himoyalangan
           </p>
           <p className="center-logo-text">gulbozor uz</p>
           <div className="developer-box">
-            <span>Powered by Akhmaddev</span>
+            <span>powered by Akhmaddev</span>
           </div>
         </div>
       </div>
